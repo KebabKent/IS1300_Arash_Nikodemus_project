@@ -1,4 +1,5 @@
-../Core/Src/main.c:67:5:main	8	static
-../Core/Src/main.c:121:6:SystemClock_Config	96	static
-../Core/Src/main.c:178:6:HAL_TIM_PeriodElapsedCallback	16	static
-../Core/Src/main.c:196:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:62:6:Test_TrafficLights	16	static
+../Core/Src/main.c:95:5:main	24	static
+../Core/Src/main.c:161:6:SystemClock_Config	96	static
+../Core/Src/main.c:218:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:236:6:Error_Handler	4	static,ignoring_inline_asm
