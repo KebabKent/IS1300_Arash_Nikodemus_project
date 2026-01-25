@@ -1,0 +1,5 @@
+../Core/Src/View/TrafficLight_SPI_Driver.c:43:6:set_Traffic_Light	3
+../Core/Src/View/TrafficLight_SPI_Driver.c:53:6:set_Pedestrian_Light	2
+../Core/Src/View/TrafficLight_SPI_Driver.c:61:6:toggle_Pedestrian_Blue	3
+../Core/Src/View/TrafficLight_SPI_Driver.c:72:9:Decode_State	1
+../Core/Src/View/TrafficLight_SPI_Driver.c:96:6:Set_TrafficLights	1

@@ -25,8 +25,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "ssd1306.h"
-#include "ssd1306_fonts.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,33 +57,6 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void Test_TrafficLights(void) {
-    // 1. Enable the output (SR_Enable is Active LOW to turn lights ON)
-    // Your main.h defines this on Pin PC7
-    HAL_GPIO_WritePin(SR_Enable_GPIO_Port, SR_Enable_Pin, GPIO_PIN_RESET);
-
-    // 2. Prepare data: 0xFF means all 8 bits are '1' (All lights ON)
-    uint8_t test_data = 0xFF;
-
-    // 3. Loop forever to keep testing
-    while (1) {
-        // Lower the Latch (SR_STCP) to prepare for data
-        HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_RESET);
-
-        // Transmit data via SPI3 (The handle for your Traffic Lights)
-        // Make sure 'hspi3' is declared. If CubeMX named it differently, check main.c variables.
-        HAL_SPI_Transmit(&hspi3, &test_data, 1, 100);
-
-        // Raise the Latch (SR_STCP) to update the LEDs
-        HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_SET);
-
-        // Wait 500ms
-        HAL_Delay(500);
-
-        // Invert data to make them blink (0xFF -> 0x00 -> 0xFF)
-        test_data = ~test_data;
-    }
-}
 /* USER CODE END 0 */
 
 /**
@@ -96,9 +67,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	char myText[] = "Banana";
-	char retVal;
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -123,15 +91,6 @@ int main(void)
   MX_SPI2_Init();
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
-  ssd1306_Init();
-//  ssd1306_Fill(White);
-  ssd1306_SetCursor(5, 5);
-  retVal = ssd1306_WriteString(myText, Font_7x10, White);
-
-  ssd1306_UpdateScreen();
-
-  Test_TrafficLights();
-
   /* USER CODE END 2 */
 
   /* Init scheduler */

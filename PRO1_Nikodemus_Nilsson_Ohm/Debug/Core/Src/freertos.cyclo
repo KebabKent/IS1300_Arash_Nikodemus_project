@@ -1,6 +1,6 @@
-../Core/Src/freertos.c:104:6:MX_FREERTOS_Init	1
-../Core/Src/freertos.c:158:6:StartFSM_Task	1
-../Core/Src/freertos.c:176:6:StartInputTask	1
-../Core/Src/freertos.c:194:6:StartOutputTask	1
-../Core/Src/freertos.c:212:6:StartPotiTask	1
-../Core/Src/freertos.c:230:6:StartOLEDTask	1
+../Core/Src/freertos.c:115:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:174:6:StartFSM_Task	2
+../Core/Src/freertos.c:197:6:StartInputTask	3
+../Core/Src/freertos.c:227:6:StartOutputTask	2
+../Core/Src/freertos.c:255:6:StartPotiTask	1
+../Core/Src/freertos.c:273:6:StartOLEDTask	2

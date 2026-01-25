@@ -1,6 +1,6 @@
-Core/Src/Model/traffic_state.o: ../Core/Src/Model/traffic_state.c \
- ../Core/Inc/DTO/lights_state.h ../Core/Inc/main.h \
- ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
+Core/Src/Model/FSM.o: ../Core/Src/Model/FSM.c \
+ ../Core/Inc/DTO/input_state.h ../Core/Inc/DTO/lights_state.h \
+ ../Core/Inc/main.h ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
@@ -31,7 +31,8 @@ Core/Src/Model/traffic_state.o: ../Core/Src/Model/traffic_state.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Core/Inc/Model/traffic_state.h ../Core/Inc/DTO/input_state.h
+ ../Core/Inc/Model/traffic_state.h
+../Core/Inc/DTO/input_state.h:
 ../Core/Inc/DTO/lights_state.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -66,4 +67,3 @@ Core/Src/Model/traffic_state.o: ../Core/Src/Model/traffic_state.c \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Core/Inc/Model/traffic_state.h:
-../Core/Inc/DTO/input_state.h:

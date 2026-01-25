@@ -1,4 +1,4 @@
-Core/Src/Model/traffic_state.o: ../Core/Src/Model/traffic_state.c \
+Core/Src/View/OLED_View.o: ../Core/Src/View/OLED_View.c \
  ../Core/Inc/DTO/lights_state.h ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
@@ -31,7 +31,10 @@ Core/Src/Model/traffic_state.o: ../Core/Src/Model/traffic_state.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Core/Inc/Model/traffic_state.h ../Core/Inc/DTO/input_state.h
+ ../Core/Inc/View/TrafficLight_SPI_Driver.h \
+ ../Drivers/OLED_Drivers/ssd1306.h ../Drivers/OLED_Drivers/ssd1306_conf.h \
+ ../Drivers/OLED_Drivers/ssd1306_fonts.h \
+ ../Drivers/OLED_Drivers/ssd1306.h
 ../Core/Inc/DTO/lights_state.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -65,5 +68,8 @@ Core/Src/Model/traffic_state.o: ../Core/Src/Model/traffic_state.c \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
-../Core/Inc/Model/traffic_state.h:
-../Core/Inc/DTO/input_state.h:
+../Core/Inc/View/TrafficLight_SPI_Driver.h:
+../Drivers/OLED_Drivers/ssd1306.h:
+../Drivers/OLED_Drivers/ssd1306_conf.h:
+../Drivers/OLED_Drivers/ssd1306_fonts.h:
+../Drivers/OLED_Drivers/ssd1306.h:

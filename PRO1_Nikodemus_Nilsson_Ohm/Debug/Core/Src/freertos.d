@@ -40,7 +40,15 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Core/Inc/View/TrafficLight_SPI_Driver.h \
+ ../Core/Inc/DTO/lights_state.h ../Core/Inc/View/OLED_View.h \
+ ../Core/Inc/Model/traffic_state.h ../Core/Inc/DTO/input_state.h \
+ ../Drivers/OLED_Drivers/ssd1306.h ../Drivers/OLED_Drivers/ssd1306_conf.h \
+ ../Core/Inc/Model/FSM.h ../Core/Inc/Controller/InputController.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -84,3 +92,15 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+../Core/Inc/View/TrafficLight_SPI_Driver.h:
+../Core/Inc/DTO/lights_state.h:
+../Core/Inc/View/OLED_View.h:
+../Core/Inc/Model/traffic_state.h:
+../Core/Inc/DTO/input_state.h:
+../Drivers/OLED_Drivers/ssd1306.h:
+../Drivers/OLED_Drivers/ssd1306_conf.h:
+../Core/Inc/Model/FSM.h:
+../Core/Inc/Controller/InputController.h:

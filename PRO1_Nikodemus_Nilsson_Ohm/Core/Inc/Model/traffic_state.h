@@ -1,28 +1,19 @@
 #ifndef TRAFFIC_STATE_H
 #define TRAFFIC_STATE_H
 
+#include <DTO/lights_state.h>
+#include <DTO/input_state.h>
 
-typedef enum {
-	RED = 0,
-	ORANGE,
-	GREEN
-} TrafficLightState;
+void State_Init(void);
 
-typedef struct {
-	TrafficLightState Traffic_Light_State;
-	uint32_t orangeDelay;
+void Set_LightsState(void);
 
-} TrafficLight;
+LightsState_t* Return_LightsState(void);
 
-typedef struct {
-	TrafficLight Horizontal_Traffic_Light_State;
-	TrafficLight Vertical_Traffic_Light_State;
+void Set_InputState(void);
 
-	uint32_t pedestrianDelay;
-	uint32_t walkingDelay;
-	uint32_t greenDelay;
-	uint32_t redDelay;
+InputState_t* Return_InputState(void);
 
-	uint32_t PotentiometerValue;
 
-} SystemState_t;
+
+#endif

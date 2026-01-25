@@ -1,0 +1,3 @@
+../Core/Src/Controller/InputController.c:10:6:readMomentaryButton	3
+../Core/Src/Controller/InputController.c:20:6:readToggleSwitch	2
+../Core/Src/Controller/InputController.c:29:6:readAndSetInputsState	1

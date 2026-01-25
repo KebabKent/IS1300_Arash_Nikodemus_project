@@ -1,0 +1,5 @@
+../Core/Src/Model/traffic_state.c:12:6:State_Init	4	static
+../Core/Src/Model/traffic_state.c:61:6:Set_LightsState	4	static
+../Core/Src/Model/traffic_state.c:66:16:Return_LightsState	4	static
+../Core/Src/Model/traffic_state.c:70:6:Set_InputState	4	static
+../Core/Src/Model/traffic_state.c:74:15:Return_InputState	4	static

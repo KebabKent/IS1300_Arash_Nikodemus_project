@@ -25,7 +25,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "semphr.h"
+#include "View/TrafficLight_SPI_Driver.h"
+#include "View/OLED_View.h"
+#include "Model/traffic_state.h"
+#include "ssd1306.h"
+#include "Model/traffic_state.h"
+#include "Model/FSM.h"
+#include "Controller/InputController.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +52,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+uint32_t selected = 1;
+SemaphoreHandle_t outputMutex;
+SemaphoreHandle_t inputMutex;
+
 
 /* USER CODE END Variables */
 /* Definitions for FSM_Task */
@@ -105,9 +116,14 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
-
+  State_Init();
+  ssd1306_Init();
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
+
+  outputMutex = xSemaphoreCreateMutex();
+  inputMutex = xSemaphoreCreateMutex();
+
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -161,7 +177,12 @@ void StartFSM_Task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
+	  {
+		  readAndSet();
+		  xSemaphoreGive(inputMutex);
+	  }
+	  osDelay(1);
   }
   /* USER CODE END StartFSM_Task */
 }
@@ -176,10 +197,22 @@ void StartFSM_Task(void *argument)
 void StartInputTask(void *argument)
 {
   /* USER CODE BEGIN StartInputTask */
-  /* Infinite loop */
+	InputState_t* state;
+
   for(;;)
   {
-    osDelay(1);
+	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
+	  {
+		  if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
+		  {
+			  state = Return_InputState();
+			  readAndSetInputsState(state);
+			  xSemaphoreGive(outputMutex);
+		  }
+		  xSemaphoreGive(inputMutex);
+	  }
+
+	  osDelay(10);
   }
   /* USER CODE END StartInputTask */
 }
@@ -195,11 +228,21 @@ void StartOutputTask(void *argument)
 {
   /* USER CODE BEGIN StartOutputTask */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartOutputTask */
+	LightsState_t* state;
+	HAL_GPIO_WritePin(SR_Reset_GPIO_Port, SR_Reset_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(SR_Enable_GPIO_Port, SR_Enable_Pin, GPIO_PIN_RESET);
+
+	for(;;)
+	{
+		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
+		{
+			state = Return_LightsState();
+			Set_TrafficLights(state);
+			xSemaphoreGive(outputMutex);
+		}
+		osDelay(200);
+	}
+	/* USER CODE END StartOutputTask */
 }
 
 /* USER CODE BEGIN Header_StartPotiTask */
@@ -215,7 +258,7 @@ void StartPotiTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	osDelay(1);
   }
   /* USER CODE END StartPotiTask */
 }
@@ -229,12 +272,21 @@ void StartPotiTask(void *argument)
 /* USER CODE END Header_StartOLEDTask */
 void StartOLEDTask(void *argument)
 {
-  /* USER CODE BEGIN StartOLEDTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+	/* USER CODE BEGIN StartOLEDTask */
+	/* Infinite loop */
+	LightsState_t* state;
+
+	for(;;)
+	{
+		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
+		{
+			state = Return_LightsState();
+			update_OLED(state);
+
+			xSemaphoreGive(outputMutex);
+		}
+		osDelay(20);
+	}
   /* USER CODE END StartOLEDTask */
 }
 

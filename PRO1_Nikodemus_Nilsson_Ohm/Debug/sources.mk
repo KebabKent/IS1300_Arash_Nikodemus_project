@@ -22,7 +22,9 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Core/Src/Controller \
 Core/Src/Model \
+Core/Src/View \
 Core/Src \
 Core/Startup \
 Drivers/OLED_Drivers \

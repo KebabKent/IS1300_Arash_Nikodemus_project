@@ -1,0 +1,2 @@
+../Core/Src/View/OLED_View.c:9:6:set_delay	2
+../Core/Src/View/OLED_View.c:21:6:update_OLED	1

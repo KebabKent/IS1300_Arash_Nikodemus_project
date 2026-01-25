@@ -108,8 +108,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(SR_STCP_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TL2_Car_Pin TL3_Car_Pin PL2_Switch_Pin */
-  GPIO_InitStruct.Pin = TL2_Car_Pin|TL3_Car_Pin|PL2_Switch_Pin;
+  /*Configure GPIO pins : TL2_Car_Pin TL3_Car_Pin */
+  GPIO_InitStruct.Pin = TL2_Car_Pin|TL3_Car_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -128,11 +128,23 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TL4_Car_Pin PL1_Switch_Pin */
-  GPIO_InitStruct.Pin = TL4_Car_Pin|PL1_Switch_Pin;
+  /*Configure GPIO pin : TL4_Car_Pin */
+  GPIO_InitStruct.Pin = TL4_Car_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(TL4_Car_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PL1_Switch_Pin */
+  GPIO_InitStruct.Pin = PL1_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(PL1_Switch_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PL2_Switch_Pin */
+  GPIO_InitStruct.Pin = PL2_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(PL2_Switch_GPIO_Port, &GPIO_InitStruct);
 
 }
 
