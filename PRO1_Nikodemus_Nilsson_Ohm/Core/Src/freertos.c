@@ -184,7 +184,7 @@ void StartFSM_Task(void *argument)
 		  }
 		  xSemaphoreGive(inputMutex);
 	  }
-	  osDelay(1);
+	  osDelay(10);
   }
   /* USER CODE END StartFSM_Task */
 }
