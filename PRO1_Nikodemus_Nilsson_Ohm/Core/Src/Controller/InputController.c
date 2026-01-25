@@ -2,6 +2,8 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "main.h"
+#include "Model/traffic_state.h"
+
 
 static uint8_t lastBtnLeft = GPIO_PIN_SET;
 static uint8_t lastBtnUp   = GPIO_PIN_SET;
@@ -26,7 +28,10 @@ void readToggleSwitch(GPIO_TypeDef* Port, uint16_t Pin, bool* outState) {
 }
 
 // --- MAIN INPUT CONTROLLER ---
-void readAndSetInputsState(InputState_t* state) {
+void readAndSetInputsState() {
+	InputState_t* state;
+	state = Return_InputState();
+
     readMomentaryButton(PL1_Switch_GPIO_Port, PL1_Switch_Pin, &lastBtnLeft, &state->Button_Pressed_Left);
     readMomentaryButton(PL2_Switch_GPIO_Port, PL2_Switch_Pin, &lastBtnUp,   &state->Button_Pressed_Up);
 

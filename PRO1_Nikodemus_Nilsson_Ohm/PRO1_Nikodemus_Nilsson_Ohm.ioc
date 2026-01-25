@@ -2,9 +2,9 @@
 CAD.formats=
 CAD.pinconfig=
 CAD.provider=
-FREERTOS.FootprintOK=false
+FREERTOS.FootprintOK=true
 FREERTOS.IPParameters=Tasks01,configUSE_NEWLIB_REENTRANT,FootprintOK,configTOTAL_HEAP_SIZE
-FREERTOS.Tasks01=FSM_Task,41,1024,StartFSM_Task,Default,NULL,Dynamic,NULL,NULL;Input_Task,33,512,StartInputTask,Default,NULL,Dynamic,NULL,NULL;Output_Task,17,512,StartOutputTask,Default,NULL,Dynamic,NULL,NULL;Poti_Task,17,256,StartPotiTask,Default,NULL,Dynamic,NULL,NULL;OLED_Task,9,1024,StartOLEDTask,Default,NULL,Dynamic,NULL,NULL
+FREERTOS.Tasks01=FSM_Task,41,1024,StartFSM_Task,Default,NULL,Dynamic,NULL,NULL;Input_Task,33,512,StartInputTask,Default,NULL,Dynamic,NULL,NULL;Output_Task,25,512,StartOutputTask,Default,NULL,Dynamic,NULL,NULL;Poti_Task,17,256,StartPotiTask,Default,NULL,Dynamic,NULL,NULL;OLED_Task,9,1024,StartOLEDTask,Default,NULL,Dynamic,NULL,NULL
 FREERTOS.configTOTAL_HEAP_SIZE=25000
 FREERTOS.configUSE_NEWLIB_REENTRANT=1
 File.Version=6

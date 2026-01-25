@@ -58,20 +58,12 @@ void State_Init(void) {
 	inputState.Car_Pesent_Down = false;
 }
 
-void Set_LightsState(void) {
-
-}
-
-
 LightsState_t* Return_LightsState(void) {
 	return &lightState;
-}
-
-void Set_InputState(void) {
-
 }
 
 InputState_t* Return_InputState(void) {
 	return &inputState;
 }
+
 

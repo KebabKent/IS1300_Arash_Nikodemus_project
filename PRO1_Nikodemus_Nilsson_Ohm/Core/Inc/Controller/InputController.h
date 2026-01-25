@@ -15,7 +15,7 @@ void readSwitchRight(void);
 
 void readSwitchDown(void);
 
-void readAndSetInputsState(InputState_t* state);
+void readAndSetInputsState();
 
 
 #endif

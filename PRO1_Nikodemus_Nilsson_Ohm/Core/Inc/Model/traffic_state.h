@@ -6,11 +6,7 @@
 
 void State_Init(void);
 
-void Set_LightsState(void);
-
 LightsState_t* Return_LightsState(void);
-
-void Set_InputState(void);
 
 InputState_t* Return_InputState(void);
 

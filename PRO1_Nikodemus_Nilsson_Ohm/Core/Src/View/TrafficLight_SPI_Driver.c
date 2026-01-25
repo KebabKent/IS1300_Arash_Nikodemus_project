@@ -3,6 +3,7 @@
 #include "stdbool.h"
 #include "main.h"
 #include "View/TrafficLight_SPI_Driver.h"
+#include "Model/traffic_state.h"
 
 #include "spi.h"
 
@@ -64,7 +65,10 @@ void toggle_Pedestrian_Blue(uint8_t* data, uint32_t bit, uint8_t ofst, bool* sta
 	}
 }
 
-spiData Decode_State(LightsState_t* state) {
+spiData Decode_State() {
+	LightsState_t* state;
+	state = Return_LightsState();
+
 	spiData temp;
 
 	temp.data[0] = 0;
@@ -88,9 +92,9 @@ spiData Decode_State(LightsState_t* state) {
 }
 
 
-void Set_TrafficLights(LightsState_t* state) {
+void Set_TrafficLights() {
 	spiData spiData;
-	spiData = Decode_State(state);
+	spiData = Decode_State();
 
     // 1. Lower Latch
     HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_RESET);

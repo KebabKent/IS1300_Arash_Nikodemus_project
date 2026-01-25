@@ -5,7 +5,6 @@
 #include <stdbool.h>
 
 typedef struct {
-
 	bool Button_Pressed_Left;
 	bool Button_Pressed_Up;
 

@@ -2,6 +2,7 @@
 #include "stdint.h"
 #include "main.h"
 #include "View/TrafficLight_SPI_Driver.h"
+#include "Model/traffic_state.h"
 
 #include "ssd1306.h"
 #include "ssd1306_fonts.h"
@@ -18,7 +19,12 @@ void set_delay(char text[], uint8_t pos, uint16_t delay, uint16_t standardDelayT
 	ssd1306_FillRectangle(pos + 3, 51 - scaledRemainingTime, pos + 10, 51, Black);
 }
 
-void update_OLED(const LightsState_t* state) {
+void update_OLED() {
+
+	LightsState_t* state;
+	state = Return_LightsState();
+
+
 	ssd1306_Fill(White);
 
 	set_delay("P1", 0, state->Horizontal_Traffic_Light_State.Delays.pedestrianDelay, state->Standard_Delay_Times.pedestrianDelay);

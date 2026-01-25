@@ -16,9 +16,9 @@ void set_Pedestrian_Light(uint8_t* data, uint32_t bit, uint8_t ofst, PedestrianL
 
 void toggle_Pedestrian_Blue(uint8_t* data, uint32_t bit, uint8_t ofst, bool* state, uint16_t* toggleFrequenzy);
 
-spiData Decode_State(LightsState_t* state);
+spiData Decode_State(void);
 
-void Set_TrafficLights(LightsState_t* state);
+void Set_TrafficLights(void);
 
 #ifdef __cplusplus
 }

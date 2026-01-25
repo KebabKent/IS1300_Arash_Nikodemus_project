@@ -1,2 +1,2 @@
-../Core/Src/View/OLED_View.c:9:6:set_delay	40	static
-../Core/Src/View/OLED_View.c:21:6:update_OLED	16	static
+../Core/Src/View/OLED_View.c:10:6:set_delay	40	static
+../Core/Src/View/OLED_View.c:22:6:update_OLED	16	static

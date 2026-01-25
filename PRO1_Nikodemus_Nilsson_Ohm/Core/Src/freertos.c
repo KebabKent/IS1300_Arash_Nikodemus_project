@@ -52,10 +52,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-uint32_t selected = 1;
 SemaphoreHandle_t outputMutex;
 SemaphoreHandle_t inputMutex;
-
 
 /* USER CODE END Variables */
 /* Definitions for FSM_Task */
@@ -77,7 +75,7 @@ osThreadId_t Output_TaskHandle;
 const osThreadAttr_t Output_Task_attributes = {
   .name = "Output_Task",
   .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal1,
+  .priority = (osPriority_t) osPriorityNormal1,
 };
 /* Definitions for Poti_Task */
 osThreadId_t Poti_TaskHandle;
@@ -114,10 +112,10 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
+	State_Init();
+	ssd1306_Init();
   /* USER CODE END Init */
-  State_Init();
-  ssd1306_Init();
+
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
 
@@ -179,7 +177,11 @@ void StartFSM_Task(void *argument)
   {
 	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
 	  {
-		  readAndSet();
+		  if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
+		  {
+			  readAndSet();
+			  xSemaphoreGive(outputMutex);
+		  }
 		  xSemaphoreGive(inputMutex);
 	  }
 	  osDelay(1);
@@ -197,18 +199,11 @@ void StartFSM_Task(void *argument)
 void StartInputTask(void *argument)
 {
   /* USER CODE BEGIN StartInputTask */
-	InputState_t* state;
-
   for(;;)
   {
 	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
 	  {
-		  if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
-		  {
-			  state = Return_InputState();
-			  readAndSetInputsState(state);
-			  xSemaphoreGive(outputMutex);
-		  }
+		  readAndSetInputsState();
 		  xSemaphoreGive(inputMutex);
 	  }
 
@@ -228,7 +223,6 @@ void StartOutputTask(void *argument)
 {
   /* USER CODE BEGIN StartOutputTask */
   /* Infinite loop */
-	LightsState_t* state;
 	HAL_GPIO_WritePin(SR_Reset_GPIO_Port, SR_Reset_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(SR_Enable_GPIO_Port, SR_Enable_Pin, GPIO_PIN_RESET);
 
@@ -236,13 +230,12 @@ void StartOutputTask(void *argument)
 	{
 		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
 		{
-			state = Return_LightsState();
-			Set_TrafficLights(state);
+			Set_TrafficLights();
 			xSemaphoreGive(outputMutex);
 		}
 		osDelay(200);
 	}
-	/* USER CODE END StartOutputTask */
+  /* USER CODE END StartOutputTask */
 }
 
 /* USER CODE BEGIN Header_StartPotiTask */
@@ -272,17 +265,13 @@ void StartPotiTask(void *argument)
 /* USER CODE END Header_StartOLEDTask */
 void StartOLEDTask(void *argument)
 {
-	/* USER CODE BEGIN StartOLEDTask */
+  /* USER CODE BEGIN StartOLEDTask */
 	/* Infinite loop */
-	LightsState_t* state;
-
 	for(;;)
 	{
 		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
 		{
-			state = Return_LightsState();
-			update_OLED(state);
-
+			update_OLED();
 			xSemaphoreGive(outputMutex);
 		}
 		osDelay(20);
