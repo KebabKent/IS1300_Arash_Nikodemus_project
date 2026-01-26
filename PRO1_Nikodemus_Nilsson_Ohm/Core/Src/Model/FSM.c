@@ -124,6 +124,150 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 
 /*Arash Code*/
+/*task 2 update*/
+
+typedef enum {
+CAR_RED = 0,
+CAR_ORANGE = 1,
+CAR_GREEN = 2
+} car_color_t;
+
+
+static car_color_t carVer = CAR_GREEN;
+static car_color_t carHor = CAR_RED;
+
+
+static bool HasVerticalCars(InputState_t* in)
+{
+	return (in->Car_Pesent_Up || in->Car_Pesent_Down);
+}
+
+
+static bool HasHorizontalCars(InputState_t* in)
+{
+	return (in->Car_Pesent_Left || in->Car_Pesent_Right);
+}
+
+
+static void setCarOutputs(void)
+{
+	if (carVer == CAR_GREEN && carHor == CAR_RED) {
+		Set_Tl_StateVerG_HorR();
+	}
+	else if (carVer == CAR_RED && carHor == CAR_GREEN) {
+		Set_Tl_StateVerR_HorG();
+	}
+	else if (carVer == CAR_ORANGE && carHor == CAR_ORANGE) {
+		Set_Tl_StateVerO_HorO();
+	}
+	else if (carVer == CAR_RED && carHor == CAR_ORANGE) {
+		Set_Tl_StateVerR_HorO();
+	}
+	else if (carVer == CAR_ORANGE && carHor == CAR_RED) {
+		Set_Tl_StateVerO_HorR();
+	}
+	else {
+		Set_Tl_StateVerO_HorO();
+	}
+}
+
+
+static void Car_Tick(LightsState_t* lights, InputState_t* input)
+{
+    bool vCars = (input->Car_Pesent_Up || input->Car_Pesent_Down);
+    bool hCars = (input->Car_Pesent_Left || input->Car_Pesent_Right);
+
+
+    if (carVer == CAR_GREEN && carHor == CAR_RED)
+    {
+        if (Delay_IsDone(TIMER_CAR_GREEN_VER))
+        {
+            if (hCars || !vCars) // If no car in vertical but car in horizontal we 
+            {
+                carVer = CAR_ORANGE;
+                carHor = CAR_RED;
+                Delay_Start(TIMER_CAR_ORANGE_VER, lights->Standard_Delay_Times.orangeDelay);
+            }
+            else
+            {
+                Delay_Start(TIMER_CAR_GREEN_VER, lights->Standard_Delay_Times.greenDelay);
+            }
+        }
+        return;
+    }
+
+
+    if (carVer == CAR_ORANGE && carHor == CAR_RED)
+    {
+        if (Delay_IsDone(TIMER_CAR_ORANGE_VER))
+        {
+            carVer = CAR_RED;
+            carHor = CAR_ORANGE; 
+            Delay_Start(TIMER_CAR_RED_VER, lights->Standard_Delay_Times.redDelay);
+        }
+        return;
+    }
+
+
+    if (carVer == CAR_RED && carHor == CAR_ORANGE)
+    {
+        if (Delay_IsDone(TIMER_CAR_RED_VER))
+        {
+            carVer = CAR_RED;
+            carHor = CAR_GREEN;
+            Delay_Start(TIMER_CAR_GREEN_HOR, lights->Standard_Delay_Times.greenDelay);
+        }
+        return;
+    }
+
+
+    if (carVer == CAR_RED && carHor == CAR_GREEN)
+    {
+        if (Delay_IsDone(TIMER_CAR_GREEN_HOR))
+        {
+            if (vCars || !hCars)
+            {
+                carHor = CAR_ORANGE;
+                carVer = CAR_RED;
+                Delay_Start(TIMER_CAR_ORANGE_HOR, lights->Standard_Delay_Times.orangeDelay);
+            }
+            else
+            {
+                Delay_Start(TIMER_CAR_GREEN_HOR, lights->Standard_Delay_Times.greenDelay);
+            }
+        }
+        return;
+    }
+
+
+    if (carVer == CAR_RED && carHor == CAR_ORANGE)
+    {
+        if (Delay_IsDone(TIMER_CAR_ORANGE_HOR))
+        {
+            carHor = CAR_RED;
+            carVer = CAR_ORANGE;
+            Delay_Start(TIMER_CAR_RED_HOR, lights->Standard_Delay_Times.redDelay);
+        }
+        return;
+    }
+
+
+    if (carVer == CAR_ORANGE && carHor == CAR_RED)
+    {
+        if (Delay_IsDone(TIMER_CAR_RED_HOR))
+        {
+            carVer = CAR_GREEN;
+            carHor = CAR_RED;
+            Delay_Start(TIMER_CAR_GREEN_VER, lights->Standard_Delay_Times.greenDelay);
+        }
+        return;
+    }
+
+    carVer = CAR_GREEN;
+    carHor = CAR_RED;
+    Delay_Start(TIMER_CAR_GREEN_VER, lights->Standard_Delay_Times.greenDelay);
+}
+/*task 2 update*/
 
 
 
@@ -136,7 +280,7 @@ void readAndSet(void) {
 
 	/*arash code*/
 
-	if (!initDone) {
+	if (!initDone) {//first time initialization
 		initDone = true;
 		Delay_Init();
 		
@@ -146,6 +290,13 @@ void readAndSet(void) {
 
 		Set_Pl_StatePassiveLeft();
 		Set_Pl_StatePassiveUp();
+		
+		
+		carVer = CAR_GREEN;
+		carHor = CAR_RED;
+
+		Car_Tick(lightsState, inputState);
+		setCarOutputs();
 	}
 
 	Delay_Tick(DT_MS);
