@@ -18,13 +18,13 @@ void readAndSet(void) {
 		count++;
 
 		if (count % 6 == 0) {
-			Set_Pl_StatePassive();
+			Set_Pl_StatePassiveUp();
 		} else if (count % 6 == 1) {
 			Set_Pl_StateWaitingUp();
 		} else if (count % 6 == 2) {
 			Set_Pl_StateWalkingUp();
 		} else if (count % 6 == 3) {
-			Set_Pl_StatePassive();
+			Set_Pl_StatePassiveLeft();
 		} else if (count % 6 == 4) {
 			Set_Pl_StateWaitingLeft();
 		} else if (count % 6 == 5) {
