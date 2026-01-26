@@ -153,15 +153,15 @@ void readAndSet(void) {
 	PedLeft_Tick(lightsState, inputState);
 	PedUp_Tick(lightsState, inputState);
 
-	setPedOutputs()
+	setPedOutputs();
 
-
+}
 	/*Not sure if we need this because I havent tested the buttons yet, but to ensure the button press is ont time event we could have this OHM */
 	/*
 	input->Button_Pressed_Left = false;
 	input->Button_Pressed_Up = false;
 	*/
-	
+
 
 
 	/*arash code*/
@@ -201,6 +201,6 @@ void readAndSet(void) {
 	}*/
 
 	
-}
+
 
 
