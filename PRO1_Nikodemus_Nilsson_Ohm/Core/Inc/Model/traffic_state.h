@@ -10,9 +10,10 @@ LightsState_t* Return_LightsState(void);
 
 InputState_t* Return_InputState(void);
 
-void Set_Pl_StatePassive(void);
+void Set_Pl_StatePassiveUp(void);
 void Set_Pl_StateWaitingUp(void);
 void Set_Pl_StateWalkingUp(void);
+void Set_Pl_StatePassiveLeft(void);
 void Set_Pl_StateWaitingLeft(void);
 void Set_Pl_StateWalkingLeft(void);
 

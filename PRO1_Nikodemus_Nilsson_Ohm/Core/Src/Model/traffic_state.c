@@ -66,26 +66,24 @@ InputState_t* Return_InputState(void) {
 	return &inputState;
 }
 
-void Set_Pl_StatePassive(void) {
-	lightState.Horizontal_Traffic_Light_State.Pdst_State = 0;
-	lightState.Horizontal_Traffic_Light_State.toggle = false;
-
+void Set_Pl_StatePassiveUp(void) {
 	lightState.Vertical_Traffic_Light_State.Pdst_State = 0;
 	lightState.Vertical_Traffic_Light_State.toggle = false;
 }
 
-void Set_Pl_StateWaitingUp(void) {
+
+void Set_Pl_StatePassiveLeft(void) {
 	lightState.Horizontal_Traffic_Light_State.Pdst_State = 0;
 	lightState.Horizontal_Traffic_Light_State.toggle = false;
 
+}
+
+void Set_Pl_StateWaitingUp(void) {
 	lightState.Vertical_Traffic_Light_State.Pdst_State = 0;
 	lightState.Vertical_Traffic_Light_State.toggle = true;
 }
 
 void Set_Pl_StateWalkingUp(void) {
-	lightState.Horizontal_Traffic_Light_State.Pdst_State = 0;
-	lightState.Horizontal_Traffic_Light_State.toggle = false;
-
 	lightState.Vertical_Traffic_Light_State.Pdst_State = 1;
 	lightState.Vertical_Traffic_Light_State.toggle = false;
 }
@@ -93,17 +91,11 @@ void Set_Pl_StateWalkingUp(void) {
 void Set_Pl_StateWaitingLeft(void) {
 	lightState.Horizontal_Traffic_Light_State.Pdst_State = 0;
 	lightState.Horizontal_Traffic_Light_State.toggle = true;
-
-	lightState.Vertical_Traffic_Light_State.Pdst_State = 0;
-	lightState.Vertical_Traffic_Light_State.toggle = false;
 }
 
 void Set_Pl_StateWalkingLeft(void) {
 	lightState.Horizontal_Traffic_Light_State.Pdst_State = 1;
 	lightState.Horizontal_Traffic_Light_State.toggle = false;
-
-	lightState.Vertical_Traffic_Light_State.Pdst_State = 0;
-	lightState.Vertical_Traffic_Light_State.toggle = false;
 }
 
 
@@ -153,10 +145,3 @@ void Set_Tl_StateVerO_HorR(void) {
 	lightState.Vertical_Traffic_Light_State.Light_State_LU = 1;
 	lightState.Vertical_Traffic_Light_State.Light_State_RD = 1;
 }
-
-
-
-
-
-
-
