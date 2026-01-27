@@ -6,14 +6,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Core/Src/Model/FSM.c \
+../Core/Src/Model/delay.c \
 ../Core/Src/Model/traffic_state.c 
 
 OBJS += \
 ./Core/Src/Model/FSM.o \
+./Core/Src/Model/delay.o \
 ./Core/Src/Model/traffic_state.o 
 
 C_DEPS += \
 ./Core/Src/Model/FSM.d \
+./Core/Src/Model/delay.d \
 ./Core/Src/Model/traffic_state.d 
 
 
@@ -24,7 +27,7 @@ Core/Src/Model/%.o Core/Src/Model/%.su Core/Src/Model/%.cyclo: ../Core/Src/Model
 clean: clean-Core-2f-Src-2f-Model
 
 clean-Core-2f-Src-2f-Model:
-	-$(RM) ./Core/Src/Model/FSM.cyclo ./Core/Src/Model/FSM.d ./Core/Src/Model/FSM.o ./Core/Src/Model/FSM.su ./Core/Src/Model/traffic_state.cyclo ./Core/Src/Model/traffic_state.d ./Core/Src/Model/traffic_state.o ./Core/Src/Model/traffic_state.su
+	-$(RM) ./Core/Src/Model/FSM.cyclo ./Core/Src/Model/FSM.d ./Core/Src/Model/FSM.o ./Core/Src/Model/FSM.su ./Core/Src/Model/delay.cyclo ./Core/Src/Model/delay.d ./Core/Src/Model/delay.o ./Core/Src/Model/delay.su ./Core/Src/Model/traffic_state.cyclo ./Core/Src/Model/traffic_state.d ./Core/Src/Model/traffic_state.o ./Core/Src/Model/traffic_state.su
 
 .PHONY: clean-Core-2f-Src-2f-Model
 

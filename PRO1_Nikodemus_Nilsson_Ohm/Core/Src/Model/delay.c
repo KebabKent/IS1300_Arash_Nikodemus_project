@@ -1,10 +1,7 @@
-#include "delay.h"
+#include "Model/delay.h"
 #include "stdint.h"
 #include "stdbool.h"
 #include "main.h"
-
-typedef __int32 int32_t;//IDK OHM I JUST WANT THE ERROR MSGS GONE WHATEVER GETS ME GOING
-typedef unsigned __int32 uint32_t;
 
 static int32_t timers[TIMER_COUNT];
 

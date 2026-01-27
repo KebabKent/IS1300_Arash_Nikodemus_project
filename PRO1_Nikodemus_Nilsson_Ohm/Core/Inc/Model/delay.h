@@ -4,9 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef __int32 int32_t;
-typedef unsigned __int32 uint32_t;
-
 typedef enum {
     TIMER_PED_LEFT_WAIT,
     TIMER_PED_LEFT_WALK,

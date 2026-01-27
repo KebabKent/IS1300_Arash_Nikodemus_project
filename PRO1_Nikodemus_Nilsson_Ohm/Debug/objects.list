@@ -1,5 +1,6 @@
 "./Core/Src/Controller/InputController.o"
 "./Core/Src/Model/FSM.o"
+"./Core/Src/Model/delay.o"
 "./Core/Src/Model/traffic_state.o"
 "./Core/Src/View/OLED_View.o"
 "./Core/Src/View/TrafficLight_SPI_Driver.o"

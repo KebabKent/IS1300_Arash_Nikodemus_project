@@ -1,1 +1,4 @@
-../Core/Src/Model/FSM.c:13:6:readAndSet	16
+../Core/Src/Model/FSM.c:35:13:setPedOutputs	5
+../Core/Src/Model/FSM.c:57:13:PedLeft_Tick	10
+../Core/Src/Model/FSM.c:91:13:PedUp_Tick	10
+../Core/Src/Model/FSM.c:131:6:readAndSet	2
