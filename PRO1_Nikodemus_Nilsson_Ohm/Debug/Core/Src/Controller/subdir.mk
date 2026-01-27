@@ -5,13 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/Controller/InputController.c 
+../Core/Src/Controller/InputController.c \
+../Core/Src/Controller/Potentiometer_Controller.c 
 
 OBJS += \
-./Core/Src/Controller/InputController.o 
+./Core/Src/Controller/InputController.o \
+./Core/Src/Controller/Potentiometer_Controller.o 
 
 C_DEPS += \
-./Core/Src/Controller/InputController.d 
+./Core/Src/Controller/InputController.d \
+./Core/Src/Controller/Potentiometer_Controller.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +24,7 @@ Core/Src/Controller/%.o Core/Src/Controller/%.su Core/Src/Controller/%.cyclo: ..
 clean: clean-Core-2f-Src-2f-Controller
 
 clean-Core-2f-Src-2f-Controller:
-	-$(RM) ./Core/Src/Controller/InputController.cyclo ./Core/Src/Controller/InputController.d ./Core/Src/Controller/InputController.o ./Core/Src/Controller/InputController.su
+	-$(RM) ./Core/Src/Controller/InputController.cyclo ./Core/Src/Controller/InputController.d ./Core/Src/Controller/InputController.o ./Core/Src/Controller/InputController.su ./Core/Src/Controller/Potentiometer_Controller.cyclo ./Core/Src/Controller/Potentiometer_Controller.d ./Core/Src/Controller/Potentiometer_Controller.o ./Core/Src/Controller/Potentiometer_Controller.su
 
 .PHONY: clean-Core-2f-Src-2f-Controller
 

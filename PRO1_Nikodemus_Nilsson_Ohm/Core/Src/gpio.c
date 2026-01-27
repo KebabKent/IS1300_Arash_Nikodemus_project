@@ -38,7 +38,6 @@
         * Output
         * EVENT_OUT
         * EXTI
-     PB1   ------> ADCx_IN16
 */
 void MX_GPIO_Init(void)
 {
@@ -58,13 +57,13 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, USR_LED1_Pin|SR_STCP_Pin|USR_LED2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, SR_Enable_Pin|Disp_CS_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(Disp_Data_Instr_GPIO_Port, Disp_Data_Instr_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SR_Reset_GPIO_Port, SR_Reset_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(Disp_CS_GPIO_Port, Disp_CS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(Disp_Reset_GPIO_Port, Disp_Reset_Pin, GPIO_PIN_SET);
@@ -88,12 +87,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(TL1_Car_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : Poti_Pin */
-  GPIO_InitStruct.Pin = Poti_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(Poti_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pins : USR_LED1_Pin USR_LED2_Pin Disp_Reset_Pin */
   GPIO_InitStruct.Pin = USR_LED1_Pin|USR_LED2_Pin|Disp_Reset_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -113,13 +106,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : SR_Enable_Pin */
-  GPIO_InitStruct.Pin = SR_Enable_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SR_Enable_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Disp_Data_Instr_Pin Disp_CS_Pin */
   GPIO_InitStruct.Pin = Disp_Data_Instr_Pin|Disp_CS_Pin;

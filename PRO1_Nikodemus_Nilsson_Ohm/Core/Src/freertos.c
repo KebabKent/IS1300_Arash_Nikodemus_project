@@ -33,6 +33,7 @@
 #include "Model/traffic_state.h"
 #include "Model/FSM.h"
 #include "Controller/InputController.h"
+#include "Controller/Potentiometer_Controller.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,7 @@
 SemaphoreHandle_t outputMutex;
 SemaphoreHandle_t inputMutex;
 
+extern TIM_HandleTypeDef htim3;
 /* USER CODE END Variables */
 /* Definitions for FSM_Task */
 osThreadId_t FSM_TaskHandle;
@@ -94,7 +96,11 @@ const osThreadAttr_t OLED_Task_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void Read_Potentiometer(void);
+void Set_TrafficLights(void);
+void update_OLED(void);
+void readAndSet(InputState_t* input);
+void readAndSetInputsState(void);
 /* USER CODE END FunctionPrototypes */
 
 void StartFSM_Task(void *argument);
@@ -112,6 +118,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 	State_Init();
 	ssd1306_Init();
   /* USER CODE END Init */
@@ -173,16 +180,20 @@ void StartFSM_Task(void *argument)
 {
   /* USER CODE BEGIN StartFSM_Task */
   /* Infinite loop */
-  for(;;)
-  {
+	InputState_t inputState;
+
+	for(;;)
+	{
 	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
 	  {
-		  if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
-		  {
-			  readAndSet();
-			  xSemaphoreGive(outputMutex);
-		  }
+		  inputState = *Return_InputState();
 		  xSemaphoreGive(inputMutex);
+	  }
+
+	  if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
+	  {
+		  readAndSet(&inputState);
+		  xSemaphoreGive(outputMutex);
 	  }
 	  osDelay(10);
   }
@@ -224,13 +235,27 @@ void StartOutputTask(void *argument)
   /* USER CODE BEGIN StartOutputTask */
   /* Infinite loop */
 	HAL_GPIO_WritePin(SR_Reset_GPIO_Port, SR_Reset_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(SR_Enable_GPIO_Port, SR_Enable_Pin, GPIO_PIN_RESET);
 
 	for(;;)
 	{
 		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
 		{
 			Set_TrafficLights();
+
+			// 2. Update Dimming (Read from Input State)
+			// We need to read the PotiValue to know how bright to be
+			InputState_t* inputs = Return_InputState();
+
+			// Invert logic (Active Low): 4095 = Dark, 0 = Bright
+			// But Input Poti is 0..4095.
+			// So: Brightness = 4095 - Poti
+			uint32_t pwm_val = 4095 - inputs->PotiValue;
+
+			// Clamp values just in case
+			if(pwm_val > 4095) pwm_val = 4095;
+
+			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pwm_val);
+
 			xSemaphoreGive(outputMutex);
 		}
 		osDelay(200);
@@ -249,10 +274,15 @@ void StartPotiTask(void *argument)
 {
   /* USER CODE BEGIN StartPotiTask */
   /* Infinite loop */
-  for(;;)
-  {
-	osDelay(1);
-  }
+	for(;;)
+	{
+	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
+	  {
+		  Read_Potentiometer();
+		  xSemaphoreGive(inputMutex);
+	  }
+	  osDelay(200);
+	}
   /* USER CODE END StartPotiTask */
 }
 

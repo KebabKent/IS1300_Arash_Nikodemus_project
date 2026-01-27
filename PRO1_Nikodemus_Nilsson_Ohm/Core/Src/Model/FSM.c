@@ -10,9 +10,8 @@ uint8_t count = 0;
 uint8_t count2 = 0;
 
 
-void readAndSet(void) {
+void readAndSet(InputState_t* inputState) {
 	LightsState_t* lightsState = Return_LightsState();
-	InputState_t* inputState = Return_InputState();
 
 	if (inputState->Button_Pressed_Left) {
 		count++;

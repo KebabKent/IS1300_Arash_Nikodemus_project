@@ -4,6 +4,6 @@
 #include <DTO/input_state.h>
 #include <DTO/lights_state.h>
 
-void readAndSet(void);
+void readAndSet(InputState_t* inputState);
 
 #endif
