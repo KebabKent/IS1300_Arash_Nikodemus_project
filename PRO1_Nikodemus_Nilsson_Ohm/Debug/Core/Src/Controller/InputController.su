@@ -1,3 +1,0 @@
-../Core/Src/Controller/InputController.c:12:6:readMomentaryButton	32	static
-../Core/Src/Controller/InputController.c:22:6:readToggleSwitch	24	static
-../Core/Src/Controller/InputController.c:31:6:readAndSetInputsState	16	static

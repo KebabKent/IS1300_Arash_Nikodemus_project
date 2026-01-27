@@ -1,6 +1,0 @@
-../Core/Src/freertos.c:119:6:MX_FREERTOS_Init	8	static
-../Core/Src/freertos.c:179:6:StartFSM_Task	24	static
-../Core/Src/freertos.c:210:6:StartInputTask	16	static
-../Core/Src/freertos.c:233:6:StartOutputTask	24	static
-../Core/Src/freertos.c:273:6:StartPotiTask	16	static
-../Core/Src/freertos.c:296:6:StartOLEDTask	16	static

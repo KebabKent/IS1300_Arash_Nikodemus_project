@@ -1,5 +1,0 @@
-../Core/Src/View/TrafficLight_SPI_Driver.c:42:6:set_Traffic_Light	24	static
-../Core/Src/View/TrafficLight_SPI_Driver.c:52:6:set_Pedestrian_Light	24	static
-../Core/Src/View/TrafficLight_SPI_Driver.c:60:6:toggle_Pedestrian_Blue	24	static
-../Core/Src/View/TrafficLight_SPI_Driver.c:68:9:Decode_State	32	static
-../Core/Src/View/TrafficLight_SPI_Driver.c:95:6:Set_TrafficLights	16	static
