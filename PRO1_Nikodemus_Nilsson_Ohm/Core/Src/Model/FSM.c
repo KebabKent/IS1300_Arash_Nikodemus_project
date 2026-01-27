@@ -58,6 +58,10 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 					pedLeftState = PED_WALKING;
 					Delay_Start(TIMER_PED_LEFT_WALK, lights->Standard_Delay_Times.walkingDelay);
 				}
+				else if ((activePed== ACTIVE_UP) & (Delay_IsDone(TIMER_PED_LEFT_WAIT)))
+				{
+					Delay_Start(TIMER_PED_LEFT_WAIT, Delay_Remaining(3));
+				}
 			}
 		break;
 
@@ -91,6 +95,10 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 					activePed = ACTIVE_UP;
 					pedUpState = PED_WALKING;
 					Delay_Start(TIMER_PED_UP_WALK, lights->Standard_Delay_Times.walkingDelay);
+				}
+				else if ((activePed== ACTIVE_LEFT) & (Delay_IsDone(TIMER_PED_UP_WAIT)))
+				{
+					Delay_Start(TIMER_PED_UP_WAIT, Delay_Remaining(1));
 				}
 			}
 		break;
