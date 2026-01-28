@@ -89,13 +89,13 @@ void Set_TrafficLights(LightsState_t* lightsState) {
 	uint8_t data[3];
 	Decode_State(lightsState, data);
 
-    // 1. Lower Latch
+    // Lower Latch
     HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_RESET);
 
-    // 2. Transmit 3 Bytes
+    // Transmit 3 Bytes
     HAL_SPI_Transmit(&hspi3, data, 3, 100);
 
-    // 3. Raise Latch
+    // Raise Latch
     HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_SET);
 }
 
