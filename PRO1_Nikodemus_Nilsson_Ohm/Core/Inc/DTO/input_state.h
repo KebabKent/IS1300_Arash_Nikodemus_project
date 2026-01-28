@@ -12,8 +12,6 @@ typedef struct {
 	bool Car_Pesent_Up;
 	bool Car_Pesent_Right;
 	bool Car_Pesent_Down;
-
-	uint16_t PotiValue;
 } InputState_t;
 
 #endif

@@ -9,7 +9,7 @@ extern "C" {
 
 void set_delay(char text[], uint8_t pos, uint16_t delay, uint16_t standardDelayTime);
 
-void update_OLED(void);
+void update_OLED(LightsState_t* lightsState);
 
 #ifdef __cplusplus
 }

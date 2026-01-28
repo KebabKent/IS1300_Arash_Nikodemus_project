@@ -65,42 +65,35 @@ void toggle_Pedestrian_Blue(uint8_t* data, uint32_t bit, uint8_t ofst, bool* sta
 	}
 }
 
-spiData Decode_State() {
-	LightsState_t* state;
-	state = Return_LightsState();
-
-	spiData temp;
-
-	temp.data[0] = 0;
-	temp.data[1] = 0;
-	temp.data[2] = 0;
+void Decode_State(LightsState_t* state, uint8_t* data) {
+	data[0] = 0;
+	data[1] = 0;
+	data[2] = 0;
 
 	// Horizontal
-	set_Traffic_Light(&temp.data[2], 0x1, 0, &state->Horizontal_Traffic_Light_State.Light_State_LU);
-	set_Traffic_Light(&temp.data[0], 0x10000, 16, &state->Horizontal_Traffic_Light_State.Light_State_RD);
-	set_Pedestrian_Light(&temp.data[2], 0x8, 0, &state->Horizontal_Traffic_Light_State.Pdst_State);
+	set_Traffic_Light(&data[2], 0x1, 0, &state->Horizontal_Traffic_Light_State.Light_State_LU);
+	set_Traffic_Light(&data[0], 0x10000, 16, &state->Horizontal_Traffic_Light_State.Light_State_RD);
+	set_Pedestrian_Light(&data[2], 0x8, 0, &state->Horizontal_Traffic_Light_State.Pdst_State);
 
 	// Vertical
-	set_Traffic_Light(&temp.data[0], 0x80000, 16, &state->Vertical_Traffic_Light_State.Light_State_LU);
-	set_Traffic_Light(&temp.data[1], 0x100, 8, &state->Vertical_Traffic_Light_State.Light_State_RD);
-	set_Pedestrian_Light(&temp.data[1], 0x800, 8, &state->Vertical_Traffic_Light_State.Pdst_State);
+	set_Traffic_Light(&data[0], 0x80000, 16, &state->Vertical_Traffic_Light_State.Light_State_LU);
+	set_Traffic_Light(&data[1], 0x100, 8, &state->Vertical_Traffic_Light_State.Light_State_RD);
+	set_Pedestrian_Light(&data[1], 0x800, 8, &state->Vertical_Traffic_Light_State.Pdst_State);
 
-	toggle_Pedestrian_Blue(&temp.data[2], 0x20, 0, &state->Horizontal_Traffic_Light_State.toggle, &state->toggleFrequenzy);
-	toggle_Pedestrian_Blue(&temp.data[1], 0x2000, 8, &state->Vertical_Traffic_Light_State.toggle, &state->toggleFrequenzy);
-
-	return temp;
+	toggle_Pedestrian_Blue(&data[2], 0x20, 0, &state->Horizontal_Traffic_Light_State.toggle, &state->toggleFrequenzy);
+	toggle_Pedestrian_Blue(&data[1], 0x2000, 8, &state->Vertical_Traffic_Light_State.toggle, &state->toggleFrequenzy);
 }
 
 
-void Set_TrafficLights() {
-	spiData spiData;
-	spiData = Decode_State();
+void Set_TrafficLights(LightsState_t* lightsState) {
+	uint8_t data[3];
+	Decode_State(lightsState, data);
 
     // 1. Lower Latch
     HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_RESET);
 
     // 2. Transmit 3 Bytes
-    HAL_SPI_Transmit(&hspi3, spiData.data, 3, 100);
+    HAL_SPI_Transmit(&hspi3, data, 3, 100);
 
     // 3. Raise Latch
     HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_SET);

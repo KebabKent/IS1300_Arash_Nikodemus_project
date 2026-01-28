@@ -97,8 +97,8 @@ const osThreadAttr_t OLED_Task_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void Read_Potentiometer(void);
-void Set_TrafficLights(void);
-void update_OLED(void);
+void Set_TrafficLights(LightsState_t* lightsState);
+void update_OLED(LightsState_t* lightsState);
 void readAndSet(InputState_t* input);
 void readAndSetInputsState(void);
 /* USER CODE END FunctionPrototypes */
@@ -195,6 +195,7 @@ void StartFSM_Task(void *argument)
 		  readAndSet(&inputState);
 		  xSemaphoreGive(outputMutex);
 	  }
+
 	  osDelay(10);
   }
   /* USER CODE END StartFSM_Task */
@@ -234,31 +235,21 @@ void StartOutputTask(void *argument)
 {
   /* USER CODE BEGIN StartOutputTask */
   /* Infinite loop */
+	LightsState_t lightsState;
+
 	HAL_GPIO_WritePin(SR_Reset_GPIO_Port, SR_Reset_Pin, GPIO_PIN_SET);
 
 	for(;;)
 	{
 		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
 		{
-			Set_TrafficLights();
-
-			// 2. Update Dimming (Read from Input State)
-			// We need to read the PotiValue to know how bright to be
-			InputState_t* inputs = Return_InputState();
-
-			// Invert logic (Active Low): 4095 = Dark, 0 = Bright
-			// But Input Poti is 0..4095.
-			// So: Brightness = 4095 - Poti
-			uint32_t pwm_val = 4095 - inputs->PotiValue;
-
-			// Clamp values just in case
-			if(pwm_val > 4095) pwm_val = 4095;
-
-			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, pwm_val);
-
+			lightsState = *Return_LightsState();
 			xSemaphoreGive(outputMutex);
 		}
-		osDelay(200);
+
+		Set_TrafficLights(&lightsState);
+
+		osDelay(100);
 	}
   /* USER CODE END StartOutputTask */
 }
@@ -281,7 +272,8 @@ void StartPotiTask(void *argument)
 		  Read_Potentiometer();
 		  xSemaphoreGive(inputMutex);
 	  }
-	  osDelay(200);
+
+	  osDelay(100);
 	}
   /* USER CODE END StartPotiTask */
 }
@@ -297,13 +289,18 @@ void StartOLEDTask(void *argument)
 {
   /* USER CODE BEGIN StartOLEDTask */
 	/* Infinite loop */
+	LightsState_t lightsState;
+
 	for(;;)
 	{
 		if (xSemaphoreTake(outputMutex, portMAX_DELAY) == pdTRUE)
 		{
-			update_OLED();
+			lightsState = *Return_LightsState();
 			xSemaphoreGive(outputMutex);
 		}
+
+		update_OLED(&lightsState);
+
 		osDelay(20);
 	}
   /* USER CODE END StartOLEDTask */

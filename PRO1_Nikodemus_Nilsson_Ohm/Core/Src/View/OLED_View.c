@@ -19,12 +19,7 @@ void set_delay(char text[], uint8_t pos, uint16_t delay, uint16_t standardDelayT
 	ssd1306_FillRectangle(pos + 3, 51 - scaledRemainingTime, pos + 10, 51, Black);
 }
 
-void update_OLED() {
-
-	LightsState_t* state;
-	state = Return_LightsState();
-
-
+void update_OLED(LightsState_t* state) {
 	ssd1306_Fill(White);
 
 	set_delay("P1", 0, state->Horizontal_Traffic_Light_State.Delays.pedestrianDelay, state->Standard_Delay_Times.pedestrianDelay);
