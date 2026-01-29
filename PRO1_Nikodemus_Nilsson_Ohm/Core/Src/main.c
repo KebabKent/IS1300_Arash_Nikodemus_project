@@ -27,6 +27,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -36,6 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define RUN_TEST_PROGRAM
 
 /* USER CODE END PD */
 
@@ -95,6 +97,10 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+	#ifdef RUN_TEST_PROGRAM
+		Test_program();
+	#endif
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
