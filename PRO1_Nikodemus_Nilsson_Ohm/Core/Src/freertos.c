@@ -267,12 +267,7 @@ void StartPotiTask(void *argument)
   /* Infinite loop */
 	for(;;)
 	{
-	  if (xSemaphoreTake(inputMutex, portMAX_DELAY) == pdTRUE)
-	  {
-		  Read_Potentiometer();
-		  xSemaphoreGive(inputMutex);
-	  }
-
+		Read_Potentiometer();
 	  osDelay(100);
 	}
   /* USER CODE END StartPotiTask */
