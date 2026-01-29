@@ -9,6 +9,7 @@
 #include "Model/delay.h"
 
 #define DT_MS 10 //the constant I am assuming right now for the peroid of the fsm, if any update is to take place we just gotta fix it here 
+	int firsttime=0;
 
 uint8_t count = 0;
 uint8_t count2 = 0;
@@ -169,6 +170,7 @@ static bool Up_RedToGreen(LightsState_t* lights)
 
     if (carUpState == CAR_O && Delay_IsDone(TIMER_CAR_UP_ORANGE)) {
         carUpState = CAR_G;
+        Delay_Start(TIMER_CAR_UP_GREEN, lights->Standard_Delay_Times.greenDelay);
         return true;
     }
 
@@ -201,6 +203,7 @@ static bool Left_RedToGreen(LightsState_t* lights)
 
     if (carLeftState == CAR_O && Delay_IsDone(TIMER_CAR_LEFT_ORANGE)) {
         carLeftState = CAR_G;
+        Delay_Start(TIMER_CAR_LEFT_GREEN, lights->Standard_Delay_Times.greenDelay);
         return true;
     }
 
@@ -220,48 +223,48 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
     	(pedLeftState == PED_PASSIVE) &&
     	(activePed == ACTIVE_NONE);
 
+	bool upGreen=true;
+	if(firsttime==0)
+	{
+		Up_GreenToRed(lights);
+		Left_RedToGreen(lights);
+		firsttime++;
+	}
 
-	bool passiveMode = (!upCars && !leftCars && noPedActivity);
+	if(Delay_IsDone(TIMER_CAR_UP_GREEN) && upGreen)
+		{
+	Up_GreenToRed(lights);
+	Left_RedToGreen(lights);
+	upGreen=false;
+		}
+	if(Delay_IsDone(TIMER_CAR_LEFT_GREEN) && !upGreen)
+	{
+		Up_RedToGreen(lights);
+		Left_GreenToRed(lights);
+		upGreen=true;
+	}
+
+	bool passiveMode = false;
+			//(!upCars && !leftCars && noPedActivity);
 
 
 	if(passiveMode)
 	{
-		if (carUpState == CAR_G && carLeftState == CAR_R)
+		if (carUpState == CAR_G && carLeftState == CAR_R && Delay_IsDone(TIMER_CAR_UP_GREEN))
     	{
-        if (!Delay_IsDone(TIMER_CAR_UP_GREEN)) return;
         Up_GreenToRed(lights);
+        Left_RedToGreen(lights);
         return;
-    }
+        }
 
-    if (carLeftState == CAR_R && carUpState != CAR_G) 
+    if (carLeftState == CAR_G && carUpState == CAR_R && Delay_IsDone(TIMER_CAR_LEFT_GREEN))
     {
-        if (Up_GreenToRed(lights)){Left_RedToGreen(lights);}
-        return;
-    }
-
-    if (carUpState == CAR_R && carLeftState != CAR_G) 
-    {
-        if (Left_RedToGreen(lights)){Delay_Start(TIMER_CAR_LEFT_GREEN, lights->Standard_Delay_Times.greenDelay);}
-        return;}
-
-    if (carLeftState == CAR_G && carUpState == CAR_R)
-    {
-        if (!Delay_IsDone(TIMER_CAR_LEFT_GREEN)) return;
         Left_GreenToRed(lights);
+        Up_RedToGreen(lights);
         return;
     }
 
-	if (carUpState == CAR_R && carLeftState != CAR_G)  
-    {
-        if (Left_GreenToRed(lights)){Up_RedToGreen(lights);}
-        return;
-    }
 
-    if (carLeftState == CAR_R && carUpState != CAR_G)  
-    {
-        if (Up_RedToGreen(lights)){Delay_Start(TIMER_CAR_UP_GREEN, lights->Standard_Delay_Times.greenDelay);}
-        return;
-    }
 
     carUpState   = CAR_G;
     carLeftState = CAR_R;
@@ -287,13 +290,14 @@ void readAndSet(InputState_t* inputState) {
 		Set_Pl_StatePassiveLeft();
 		Set_Pl_StatePassiveUp();
 
-		carUpState   = CAR_G;   
-    	carLeftState = CAR_R;
+		//carUpState   = CAR_G;
+    	//carLeftState = CAR_R;
 
-		Set_Tl_StateVerG();
-    	Set_Tl_StateHorR();
+		//Set_Tl_StateVerG();
+    	//Set_Tl_StateHorR();
 
-		Delay_Start(TIMER_CAR_UP_GREEN, lightsState->Standard_Delay_Times.greenDelay);
+		//Delay_Start(TIMER_CAR_UP_GREEN, lightsState->Standard_Delay_Times.greenDelay);
+
 
 	}
 
@@ -308,11 +312,15 @@ void readAndSet(InputState_t* inputState) {
 	setCarOutputs();
 
 
-	lightsState->Horizontal_Traffic_Light_State.Delays.pedestrianDelay = Delay_Remaining(0);
-	lightsState->Horizontal_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(1);
+	lightsState->Horizontal_Traffic_Light_State.Delays.pedestrianDelay = Delay_Remaining(TIMER_PED_LEFT_WAIT);
+	lightsState->Horizontal_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(TIMER_PED_LEFT_WALK);
+	lightsState->Horizontal_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_UP_GREEN);
+	lightsState->Horizontal_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_UP_ORANGE);
 
-	lightsState->Vertical_Traffic_Light_State.Delays.pedestrianDelay = Delay_Remaining(2);
-	lightsState->Vertical_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(3);
+	lightsState->Vertical_Traffic_Light_State.Delays.pedestrianDelay = Delay_Remaining(TIMER_PED_UP_WAIT);
+	lightsState->Vertical_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(TIMER_PED_UP_WALK);
+	lightsState->Vertical_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_LEFT_GREEN);
+	lightsState->Vertical_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_LEFT_ORANGE);
 
 
 
