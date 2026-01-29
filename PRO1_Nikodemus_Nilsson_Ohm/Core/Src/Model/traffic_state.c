@@ -106,42 +106,33 @@ void Set_Pl_StateWalkingLeft(void) {
 
 
 
-void Set_Tl_StateVerG_HorR(void) {
-	lightState.Horizontal_Traffic_Light_State.Light_State_LU = RED_Tr;
-	lightState.Horizontal_Traffic_Light_State.Light_State_RD = RED_Tr;
-
+void Set_Tl_StateVerG(void) {
 	lightState.Vertical_Traffic_Light_State.Light_State_LU = GREEN_Tr;
 	lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
 }
 
-void Set_Tl_StateVerR_HorG(void) {
+void Set_Tl_StateHorG(void) {
 	lightState.Horizontal_Traffic_Light_State.Light_State_LU = GREEN_Tr;
 	lightState.Horizontal_Traffic_Light_State.Light_State_RD = GREEN_Tr;
-
-	lightState.Vertical_Traffic_Light_State.Light_State_LU = RED_Tr;
-	lightState.Vertical_Traffic_Light_State.Light_State_RD = RED_Tr;
 }
 
-void Set_Tl_StateVerO_HorO(void) {
-	lightState.Horizontal_Traffic_Light_State.Light_State_LU = ORANGE_Tr;
-	lightState.Horizontal_Traffic_Light_State.Light_State_RD = ORANGE_Tr;
-
+void Set_Tl_StateVerO(void) {
 	lightState.Vertical_Traffic_Light_State.Light_State_LU = ORANGE_Tr;
 	lightState.Vertical_Traffic_Light_State.Light_State_RD = ORANGE_Tr;
 }
 
-void Set_Tl_StateVerR_HorO(void) {
+void Set_Tl_StateHorO(void) {
 	lightState.Horizontal_Traffic_Light_State.Light_State_LU = ORANGE_Tr;
 	lightState.Horizontal_Traffic_Light_State.Light_State_RD = ORANGE_Tr;
+}
 
+void Set_Tl_StateVerR(void) {
 	lightState.Vertical_Traffic_Light_State.Light_State_LU = RED_Tr;
 	lightState.Vertical_Traffic_Light_State.Light_State_RD = RED_Tr;
 }
 
-void Set_Tl_StateVerO_HorR(void) {
+void Set_Tl_StateHorR(void) {
 	lightState.Horizontal_Traffic_Light_State.Light_State_LU = RED_Tr;
 	lightState.Horizontal_Traffic_Light_State.Light_State_RD = RED_Tr;
-
-	lightState.Vertical_Traffic_Light_State.Light_State_LU = ORANGE_Tr;
-	lightState.Vertical_Traffic_Light_State.Light_State_RD = ORANGE_Tr;
 }
+
