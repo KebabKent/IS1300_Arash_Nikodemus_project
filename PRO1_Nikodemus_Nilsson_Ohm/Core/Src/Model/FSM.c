@@ -307,7 +307,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
 
     if (carPhase == PHASE_VER_GREEN) {
-	bool minGreenDone = Delay_IsDone(TIMER_CAR_UP_GREEN);
+	bool minGreenRightDone = Delay_IsDone(TIMER_CAR_UP_GREEN);
 
         if (leftArrived && !upCars) {
             carPhase = PHASE_SWITCH_TO_HOR;
@@ -320,11 +320,22 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         }
 
-        if (leftArrived && upCars) {
-			if (minGreenDone) {//might remove this test for now
+        if (leftArrived && upCars && leftRedWaitArmed!= true) {
+			if (minGreenRightDone) {//might remove this test for now
             Delay_Start(TIMER_CAR_LEFT_RED, redDelayMax);
 			leftRedWaitArmed = true;
 			}
+
+        }
+
+		if (leftArrived && upCars && leftRedWaitArmed== true) {
+			carPhase = PHASE_SWITCH_TO_HOR;
+            Timer_Stop(TIMER_CAR_LEFT_RED);
+			leftRedWaitArmed = false;
+
+			 prevUpCars = upCars;
+        	prevLeftCars = leftCars;
+       		 return;
 
         }
 
@@ -342,7 +353,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
         	prevLeftCars = leftCars;
         	return;
 		}
-        if ( minGreenDone && !upCars && leftCars) {
+        if ( minGreenRightDone && !upCars && leftCars) {
             carPhase = PHASE_SWITCH_TO_HOR;
             Timer_Stop(TIMER_CAR_LEFT_RED);
 			leftRedWaitArmed = false;
@@ -356,7 +367,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
     } 
 	
 	else if (carPhase == PHASE_HOR_GREEN) {
-	bool minGreenDone = Delay_IsDone(TIMER_CAR_LEFT_GREEN);
+	bool minGreenLeftDone = Delay_IsDone(TIMER_CAR_LEFT_GREEN);
 
         if (upArrived && !leftCars) {
             carPhase = PHASE_SWITCH_TO_VER;
@@ -368,10 +379,21 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         }
 
-        if (upArrived && leftCars) {
-			if (minGreenDone) {
+        if (upArrived && leftCars && upRedWaitArmed!=true) {
+			if (minGreenLeftDone) {
             Delay_Start(TIMER_CAR_UP_RED, redDelayMax);
 			upRedWaitArmed = true;
+			}
+        }
+
+
+		 if (upArrived && leftCars && upRedWaitArmed==true ) {
+			carPhase = PHASE_SWITCH_TO_VER;
+            Timer_Stop(TIMER_CAR_UP_RED);
+			upRedWaitArmed = false;
+        	prevUpCars = upCars;
+        	prevLeftCars = leftCars;
+        	return;
 			}
         }
 
@@ -389,7 +411,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
         	return;
 		}
 
-        if (minGreenDone &&!leftCars && upCars) {
+        if (minGreenLeftDone &&!leftCars && upCars) {
             carPhase = PHASE_SWITCH_TO_VER;
             Timer_Stop(TIMER_CAR_UP_RED);
 			upRedWaitArmed = false;
