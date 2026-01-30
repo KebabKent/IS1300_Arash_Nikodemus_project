@@ -395,7 +395,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
         	prevLeftCars = leftCars;
         	return;
 			}
-        }
+        
 
         if (!upCars) {
             Timer_Stop(TIMER_CAR_UP_RED);
