@@ -35,12 +35,12 @@
  */
 void Test_program(void)
 {
-	Test_OLED();
-	Test_Lights();
-	Test_Traffic_State();
-	Test_FSM();
-	Test_Delay();
-	Test_Potentiometer();
+//	Test_OLED();
+//	Test_Lights();
+//	Test_Traffic_State();
+//	Test_FSM();
+//	Test_Delay();
+//	Test_Potentiometer();
 	Test_Input();
 }
 
