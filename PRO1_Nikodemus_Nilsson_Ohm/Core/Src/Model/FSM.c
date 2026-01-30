@@ -328,7 +328,8 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         }
 
-		if (leftArrived && upCars && leftRedWaitArmed== true && Delay_IsDone(TIMER_CAR_LEFT_RED)) {
+		if (leftArrived && upCars && leftRedWaitArmed== true) {
+			if(Delay_IsDone(TIMER_CAR_LEFT_RED)){
 			carPhase = PHASE_SWITCH_TO_HOR;
             Timer_Stop(TIMER_CAR_LEFT_RED);
 			leftRedWaitArmed = false;
@@ -338,6 +339,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 			Delay_Start(TIMER_CAR_UP_RED, redDelayMax);
 			upRedWaitArmed= true;
        		 return;
+			}
 
         }
 
@@ -389,7 +391,8 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
         }
 
 
-		 if (upArrived && leftCars && upRedWaitArmed==true && Delay_IsDone(TIMER_CAR_UP_RED) ) {
+		 if (upArrived && leftCars && upRedWaitArmed==true) {
+			if(Delay_IsDone(TIMER_CAR_UP_RED)){
 			carPhase = PHASE_SWITCH_TO_VER;
             Timer_Stop(TIMER_CAR_UP_RED);
 			upRedWaitArmed = false;
@@ -398,7 +401,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 			Delay_Start(TIMER_CAR_LEFT_RED, redDelayMax);
 			leftRedWaitArmed= true;
         	return;
-			}
+			}}
         
 
         if (!upCars) {
