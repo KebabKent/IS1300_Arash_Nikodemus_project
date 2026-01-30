@@ -414,13 +414,13 @@ void readAndSet(InputState_t* inputState) {
 
 	lightsState->Horizontal_Traffic_Light_State.Delays.pedestrianDelay = Delay_Remaining(TIMER_PED_LEFT_WAIT);
 	lightsState->Horizontal_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(TIMER_PED_LEFT_WALK);
-	lightsState->Horizontal_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_UP_GREEN);
-	lightsState->Horizontal_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_UP_ORANGE);
+	lightsState->Horizontal_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_LEFT_GREEN);
+	lightsState->Horizontal_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_LEFT_RED);
 
 	lightsState->Vertical_Traffic_Light_State.Delays.pedestrianDelay = Delay_Remaining(TIMER_PED_UP_WAIT);
 	lightsState->Vertical_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(TIMER_PED_UP_WALK);
-	lightsState->Vertical_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_LEFT_GREEN);
-	lightsState->Vertical_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_LEFT_ORANGE);
+	lightsState->Vertical_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_UP_GREEN);
+	lightsState->Vertical_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_UP_RED);
 
 
 

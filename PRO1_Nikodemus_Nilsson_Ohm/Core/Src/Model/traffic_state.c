@@ -13,11 +13,11 @@ void State_Init(void) {
 	lightState.toggleFrequenzy = 500;
 
 	// Standard delay times
-	lightState.Standard_Delay_Times.pedestrianDelay = 10000;
-	lightState.Standard_Delay_Times.walkingDelay = 10000;
-	lightState.Standard_Delay_Times.greenDelay = 10000;
-	lightState.Standard_Delay_Times.orangeDelay = 10000;
-	lightState.Standard_Delay_Times.redDelay = 10000;
+	lightState.Standard_Delay_Times.pedestrianDelay = 2000;
+	lightState.Standard_Delay_Times.walkingDelay = 2000;
+	lightState.Standard_Delay_Times.greenDelay = 4000;
+	lightState.Standard_Delay_Times.orangeDelay = 1000;
+	lightState.Standard_Delay_Times.redDelay = 18000;
 
 	// Horizontal
 	// Lights
@@ -25,11 +25,11 @@ void State_Init(void) {
 	lightState.Horizontal_Traffic_Light_State.Light_State_RD = RED_Tr;
 	lightState.Horizontal_Traffic_Light_State.Pdst_State = RED_Pd;
 	// Delays
-	lightState.Horizontal_Traffic_Light_State.Delays.pedestrianDelay = 10000;
-	lightState.Horizontal_Traffic_Light_State.Delays.walkingDelay = 10000;
-	lightState.Horizontal_Traffic_Light_State.Delays.greenDelay = 10000;
-	lightState.Horizontal_Traffic_Light_State.Delays.orangeDelay = 5000;
-	lightState.Horizontal_Traffic_Light_State.Delays.redDelay = 10000;
+	lightState.Horizontal_Traffic_Light_State.Delays.pedestrianDelay = lightState.Standard_Delay_Times.pedestrianDelay;
+	lightState.Horizontal_Traffic_Light_State.Delays.walkingDelay = lightState.Standard_Delay_Times.walkingDelay;
+	lightState.Horizontal_Traffic_Light_State.Delays.greenDelay = lightState.Standard_Delay_Times.greenDelay;
+	lightState.Horizontal_Traffic_Light_State.Delays.orangeDelay = lightState.Standard_Delay_Times.orangeDelay;
+	lightState.Horizontal_Traffic_Light_State.Delays.redDelay = lightState.Standard_Delay_Times.redDelay;
 
 	lightState.Horizontal_Traffic_Light_State.toggle = false;
 
@@ -39,11 +39,11 @@ void State_Init(void) {
 	lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
 	lightState.Vertical_Traffic_Light_State.Pdst_State = RED_Pd;
 	// Delays
-	lightState.Vertical_Traffic_Light_State.Delays.pedestrianDelay = 10000;
-	lightState.Vertical_Traffic_Light_State.Delays.walkingDelay = 10000;
-	lightState.Vertical_Traffic_Light_State.Delays.greenDelay = 10000;
-	lightState.Vertical_Traffic_Light_State.Delays.orangeDelay = 5000;
-	lightState.Vertical_Traffic_Light_State.Delays.redDelay = 10000;
+	lightState.Vertical_Traffic_Light_State.Delays.pedestrianDelay = lightState.Standard_Delay_Times.pedestrianDelay;
+	lightState.Vertical_Traffic_Light_State.Delays.walkingDelay = lightState.Standard_Delay_Times.walkingDelay;
+	lightState.Vertical_Traffic_Light_State.Delays.greenDelay = lightState.Standard_Delay_Times.greenDelay;
+	lightState.Vertical_Traffic_Light_State.Delays.orangeDelay = lightState.Standard_Delay_Times.orangeDelay;
+	lightState.Vertical_Traffic_Light_State.Delays.redDelay = lightState.Standard_Delay_Times.redDelay;
 
 	lightState.Vertical_Traffic_Light_State.toggle = false;
 
