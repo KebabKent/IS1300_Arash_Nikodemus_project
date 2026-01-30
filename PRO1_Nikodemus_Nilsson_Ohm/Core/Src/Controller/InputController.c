@@ -3,6 +3,7 @@
 #include "stdbool.h"
 #include "main.h"
 #include "Model/traffic_state.h"
+#include "Controller/InputController.h"
 
 
 static uint8_t lastBtnLeft = GPIO_PIN_SET;

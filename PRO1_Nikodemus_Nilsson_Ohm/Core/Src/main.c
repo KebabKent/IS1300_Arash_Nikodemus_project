@@ -99,6 +99,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	#ifdef RUN_TEST_PROGRAM
 		Test_program();
+		while(1);
 	#endif
 
   /* USER CODE END 2 */

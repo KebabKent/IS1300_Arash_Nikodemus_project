@@ -1,19 +1,13 @@
 #ifndef INPUTCONTROLLER_H
 #define INPUTCONTROLLER_H
 
-#include <DTO/input_state.h>
+#include "main.h"
+#include "stdint.h"
+#include "stdbool.h"
 
-void readButtonLeft(bool* buttonPressed);
+void readMomentaryButton(GPIO_TypeDef* Port, uint16_t Pin, uint8_t* lastState, bool* outFlag);
 
-void readButtonUp(void);
-
-void readSwitchLeft(void);
-
-void readSwitchUp(void);
-
-void readSwitchRight(void);
-
-void readSwitchDown(void);
+void readToggleSwitch(GPIO_TypeDef* Port, uint16_t Pin, bool* outState);
 
 void readAndSetInputsState();
 
