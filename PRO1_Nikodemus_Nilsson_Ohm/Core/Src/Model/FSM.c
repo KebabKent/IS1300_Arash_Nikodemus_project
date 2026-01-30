@@ -240,6 +240,8 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         if (upDone && leftDone) {
             carPhase = PHASE_HOR_GREEN;
+			Delay_Start(TIMER_CAR_LEFT_GREEN, lights->Standard_Delay_Times.greenDelay);
+        	Timer_Stop(TIMER_CAR_UP_GREEN);
             Timer_Stop(TIMER_CAR_UP_RED);
             Timer_Stop(TIMER_CAR_IDLE_SWAP);
             prevIdleRem = 0;
@@ -256,7 +258,8 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         if (upDone && leftDone) {
             carPhase = PHASE_VER_GREEN;
-
+			Delay_Start(TIMER_CAR_UP_GREEN, lights->Standard_Delay_Times.greenDelay);
+        	Timer_Stop(TIMER_CAR_LEFT_GREEN);
             Timer_Stop(TIMER_CAR_LEFT_RED);
             Timer_Stop(TIMER_CAR_IDLE_SWAP);
             prevIdleRem = 0;
@@ -267,29 +270,29 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
         return;
     }
 
-    if (!upCars && !leftCars) {
-        uint32_t rem = Delay_Remaining(TIMER_CAR_IDLE_SWAP);
+    // IDLE MODE
+	if (!upCars && !leftCars) {
+    uint32_t rem = Delay_Remaining(TIMER_CAR_IDLE_SWAP);
+    if (prevIdleRem > 0 && rem == 0) {
+        if (carPhase == PHASE_VER_GREEN) carPhase = PHASE_SWITCH_TO_HOR;
+        else                            carPhase = PHASE_SWITCH_TO_VER;
 
+        Timer_Stop(TIMER_CAR_LEFT_RED);
+        Timer_Stop(TIMER_CAR_UP_RED);
+    }
+    if (rem == 0) {
+        Delay_Start(TIMER_CAR_IDLE_SWAP, lights->Standard_Delay_Times.greenDelay);
+        rem = Delay_Remaining(TIMER_CAR_IDLE_SWAP);
+    }
 
-        if (rem == 0) {
-            Delay_Start(TIMER_CAR_IDLE_SWAP, lights->Standard_Delay_Times.greenDelay);
-            rem = Delay_Remaining(TIMER_CAR_IDLE_SWAP);
-        }
+    prevIdleRem = rem;
 
-        if (prevIdleRem > 0 && rem == 0) {
-            if (carPhase == PHASE_VER_GREEN) carPhase = PHASE_SWITCH_TO_HOR;
-            else                            carPhase = PHASE_SWITCH_TO_VER;
+    prevUpCars = upCars;
+    prevLeftCars = leftCars;
+    return;
+    }
 
-            Timer_Stop(TIMER_CAR_LEFT_RED);
-            Timer_Stop(TIMER_CAR_UP_RED);
-        }
-
-        prevIdleRem = rem;
-
-        prevUpCars = upCars;
-        prevLeftCars = leftCars;
-        return;
-    } else {
+	else {
 
         Timer_Stop(TIMER_CAR_IDLE_SWAP);
         prevIdleRem = 0;
@@ -321,7 +324,9 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
             Timer_Stop(TIMER_CAR_LEFT_RED);
         }
 
-    } else if (carPhase == PHASE_HOR_GREEN) {
+    } 
+	
+	else if (carPhase == PHASE_HOR_GREEN) {
 
         if (upArrived && !leftCars) {
             carPhase = PHASE_SWITCH_TO_VER;
