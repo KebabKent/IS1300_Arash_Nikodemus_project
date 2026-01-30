@@ -1,3 +1,16 @@
+/**
+  ******************************************************************************
+  * @file    Potentiometer_Controller.c
+  * @author  [Your Name]
+  * @version 1.0
+  * @date    [Current Date]
+  * @brief   Controller for ADC Input and PWM Dimming.
+  *
+  * This file manages the interaction between the Analog-to-Digital Converter (ADC)
+  * and the Timer (TIM3) to control the brightness of the Shift Registers via
+  * the Output Enable (OE) pin.
+  ******************************************************************************
+  */
 #include "DTO/input_state.h"
 #include "stdint.h"
 #include "stdbool.h"
@@ -7,6 +20,18 @@
 extern ADC_HandleTypeDef hadc1;
 extern TIM_HandleTypeDef htim3;
 
+/**
+ * @brief Reads the Potentiometer and updates LED brightness.
+ *
+ * This function performs the following steps:
+ * 1. Starts the ADC conversion.
+ * 2. Takes 5 samples and calculates the average to reduce noise.
+ * 3. Inverts the value (because the Shift Register OE pin is Active Low).
+ * 4. Updates the Timer 3 Channel 2 Compare Register (CCR2) with the new PWM value.
+ *
+ * @note This function is blocking (polls for conversion).
+ * @return void
+ */
 void Read_Potentiometer() {
 	uint32_t sum = 0;
 
