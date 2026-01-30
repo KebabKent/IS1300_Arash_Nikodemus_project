@@ -28,7 +28,7 @@ void State_Init(void) {
 	lightState.Horizontal_Traffic_Light_State.Delays.pedestrianDelay = 10000;
 	lightState.Horizontal_Traffic_Light_State.Delays.walkingDelay = 10000;
 	lightState.Horizontal_Traffic_Light_State.Delays.greenDelay = 10000;
-	lightState.Horizontal_Traffic_Light_State.Delays.orangeDelay = 10000;
+	lightState.Horizontal_Traffic_Light_State.Delays.orangeDelay = 5000;
 	lightState.Horizontal_Traffic_Light_State.Delays.redDelay = 10000;
 
 	lightState.Horizontal_Traffic_Light_State.toggle = false;
