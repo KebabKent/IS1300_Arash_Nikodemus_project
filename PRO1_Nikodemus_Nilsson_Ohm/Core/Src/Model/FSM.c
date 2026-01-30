@@ -320,7 +320,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         }
 
-        if (leftArrived && upCars && leftRedWaitArmed!= true) {
+        if (leftCars && upCars && leftRedWaitArmed!= true) {
 			if (minGreenRightDone) {//might remove this test for now
             Delay_Start(TIMER_CAR_LEFT_RED, redDelayMax);
 			leftRedWaitArmed = true;
@@ -328,7 +328,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         }
 
-		if (leftArrived && upCars && leftRedWaitArmed== true) {
+		if (leftCars && upCars && leftRedWaitArmed== true) {
 			if(Delay_IsDone(TIMER_CAR_LEFT_RED)){
 			carPhase = PHASE_SWITCH_TO_HOR;
             Timer_Stop(TIMER_CAR_LEFT_RED);
@@ -383,7 +383,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
         }
 
-        if (upArrived && leftCars && upRedWaitArmed!=true) {
+        if (upCars && leftCars && upRedWaitArmed!=true) {
 			if (minGreenLeftDone) {
             Delay_Start(TIMER_CAR_UP_RED, redDelayMax);
 			upRedWaitArmed = true;
@@ -391,7 +391,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
         }
 
 
-		 if (upArrived && leftCars && upRedWaitArmed==true) {
+		 if (upCars && leftCars && upRedWaitArmed==true) {
 			if(Delay_IsDone(TIMER_CAR_UP_RED)){
 			carPhase = PHASE_SWITCH_TO_VER;
             Timer_Stop(TIMER_CAR_UP_RED);
