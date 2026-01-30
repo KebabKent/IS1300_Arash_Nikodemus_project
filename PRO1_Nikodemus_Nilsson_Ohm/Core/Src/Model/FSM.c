@@ -328,7 +328,6 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 		if (leftCars && upCars && leftRedWaitArmed== true) {
 			if(Delay_IsDone(TIMER_CAR_LEFT_RED) && minGreenRightDone){
 			carPhase = PHASE_SWITCH_TO_HOR;
-            Timer_Stop(TIMER_CAR_LEFT_RED);
 			leftRedWaitArmed = false;
 
 			 prevUpCars = upCars;
@@ -389,7 +388,6 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 		 if (upCars && leftCars && upRedWaitArmed==true && minGreenLeftDone) {
 			if(Delay_IsDone(TIMER_CAR_UP_RED)){
 			carPhase = PHASE_SWITCH_TO_VER;
-            Timer_Stop(TIMER_CAR_UP_RED);
 			upRedWaitArmed = false;
         	prevUpCars = upCars;
         	prevLeftCars = leftCars;
