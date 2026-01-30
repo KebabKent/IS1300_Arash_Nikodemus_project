@@ -332,7 +332,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 
 			 prevUpCars = upCars;
         	prevLeftCars = leftCars;
-			Delay_Start(TIMER_CAR_UP_RED, redDelayMax);
+			//Delay_Start(TIMER_CAR_UP_RED, redDelayMax);
 			upRedWaitArmed= true;
        		 return;
 			}
@@ -391,7 +391,7 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 			upRedWaitArmed = false;
         	prevUpCars = upCars;
         	prevLeftCars = leftCars;
-			Delay_Start(TIMER_CAR_LEFT_RED, redDelayMax);
+			//Delay_Start(TIMER_CAR_LEFT_RED, redDelayMax);
 			leftRedWaitArmed= true;
         	return;
 			}}
