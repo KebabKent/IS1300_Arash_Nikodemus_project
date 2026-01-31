@@ -10,13 +10,13 @@ InputState_t inputState;
 
 
 void State_Init(void) {
-	lightState.toggleFrequenzy = 500;
+	lightState.toggleFrequenzy = 1000;
 
 	// Standard delay times
-	lightState.Standard_Delay_Times.pedestrianDelay = 2000;
-	lightState.Standard_Delay_Times.walkingDelay = 2000;
+	lightState.Standard_Delay_Times.pedestrianDelay = 4000;
+	lightState.Standard_Delay_Times.walkingDelay = 4000;
 	lightState.Standard_Delay_Times.greenDelay = 4000;
-	lightState.Standard_Delay_Times.orangeDelay = 1000;
+	lightState.Standard_Delay_Times.orangeDelay = 4000;
 	lightState.Standard_Delay_Times.redDelay = 4000;
 
 	// Horizontal

@@ -9,7 +9,8 @@
 #include "Model/delay.h"
 
 #define DT_MS 10 //the constant I am assuming right now for the peroid of the fsm, if any update is to take place we just gotta fix it here 
-	int firsttime=0;
+
+int firsttime=0;
 
 uint8_t count = 0;
 uint8_t count2 = 0;
@@ -23,6 +24,15 @@ static bool pedUpDue   = false;
 static bool pedLeftDue = false;
 static bool pedUpRequest   = false; 
 static bool pedLeftRequest = false;
+
+typedef enum {
+    CAR_R = 0,
+    CAR_O = 1,
+    CAR_G = 2
+} car_color_t;
+
+static car_color_t carUpState   = CAR_G;
+static car_color_t carLeftState = CAR_R;
 
 
 static void setPedOutputs(void)
@@ -152,14 +162,7 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 
 /*CAR CODE*/
-typedef enum {
-    CAR_R = 0,
-    CAR_O = 1,
-    CAR_G = 2
-} car_color_t;
 
-static car_color_t carUpState   = CAR_G;  
-static car_color_t carLeftState = CAR_R;
 
 static void setCarOutputs(void)
 {
@@ -564,12 +567,5 @@ void readAndSet(InputState_t* inputState) {
 	lightsState->Vertical_Traffic_Light_State.Delays.walkingDelay = Delay_Remaining(TIMER_PED_UP_WALK);
 	lightsState->Vertical_Traffic_Light_State.Delays.greenDelay = Delay_Remaining(TIMER_CAR_UP_GREEN);
 	lightsState->Vertical_Traffic_Light_State.Delays.redDelay = Delay_Remaining(TIMER_CAR_UP_RED);
-
-
-
-
 }
-
-
-
 

@@ -77,7 +77,7 @@ void set_Pedestrian_Light(uint8_t* data, uint32_t bit, uint8_t ofst, PedestrianL
  */
 void toggle_Pedestrian_Blue(uint8_t* data, uint32_t bit, uint8_t ofst, bool* state, uint16_t* toggleFrequenzy) {
 	if (*state == true) {
-		if ((HAL_GetTick() / *toggleFrequenzy) % 2 == 0) {
+		if ((HAL_GetTick() / (*toggleFrequenzy / 2)) % 2 == 0) {
 			*data |= (bit >> ofst);
 		}
 	}
