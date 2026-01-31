@@ -67,19 +67,19 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 		break;
 
 
-		case PED_WAITING:
-			if (Delay_IsDone(TIMER_PED_LEFT_WAIT)) {//Update to add, if the trafic light is green, we will remain in wait, i have not added this yet
+		case PED_WAITING: {
+			if (Delay_IsDone(TIMER_PED_LEFT_WAIT)) {
 				pedLeftDue = true;
 			}
-				
-			if (pedLeftDue && (activePed == ACTIVE_NONE) && (carLeftState == CAR_R)) {
+			bool pedLeftCarsStopped = (carLeftState == CAR_R) || (carPhase == PHASE_HOR_SPLIT_LEFTRED);	
+			if (pedLeftDue && (activePed == ACTIVE_NONE) && pedLeftCarsStopped) {
 					activePed = ACTIVE_LEFT;
 					pedLeftState = PED_WALKING;
 					pedLeftDue = false;
 
 					Delay_Start(TIMER_PED_LEFT_WALK, lights->Standard_Delay_Times.walkingDelay);
 			}
-		break;
+		}break;
 
 
 		case PED_WALKING:
@@ -106,18 +106,19 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 		break;
 
 
-		case PED_WAITING:
+		case PED_WAITING: {
 			if (Delay_IsDone(TIMER_PED_UP_WAIT)) {
 					pedUpDue = true;
 			}
+			bool pedUpCarsStopped = (carUpState == CAR_R) || (carPhase == PHASE_VER_SPLIT_UPRED);
 
-			if (pedUpDue && (activePed == ACTIVE_NONE) && (carUpState == CAR_R)) {
+			if (pedUpDue && (activePed == ACTIVE_NONE) && (pedUpCarsStopped)) {
 					activePed = ACTIVE_UP;
 					pedUpState = PED_WALKING;
 					pedUpDue = false;
 					Delay_Start(TIMER_PED_UP_WALK, lights->Standard_Delay_Times.walkingDelay);
 			}
-		break;
+		}break;
 
 
 		case PED_WALKING:
@@ -136,20 +137,16 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 static void setCarOutputs(void)
 {
-        if (carUpState == CAR_R && pedUpState == PED_WALKING) {
+     if (carPhase == PHASE_VER_SPLIT_UPRED) {
         Set_Tl_StateVerUpR_DownG();
-    }
-    else {
+    } else {
         if (carUpState == CAR_G)      Set_Tl_StateVerG();
         else if (carUpState == CAR_O) Set_Tl_StateVerO();
         else                          Set_Tl_StateVerR();
     }
-
-    
-    if (carLeftState == CAR_R && pedLeftState == PED_WALKING) {
+    if (carPhase == PHASE_HOR_SPLIT_LEFTRED) {
         Set_Tl_StateHorLeftR_RightG();
-    }
-    else {
+    } else {
         if (carLeftState == CAR_G)      Set_Tl_StateHorG();
         else if (carLeftState == CAR_O) Set_Tl_StateHorO();
         else                            Set_Tl_StateHorR();
@@ -224,7 +221,9 @@ typedef enum {
     PHASE_VER_GREEN,
     PHASE_HOR_GREEN,
     PHASE_SWITCH_TO_VER,
-    PHASE_SWITCH_TO_HOR
+    PHASE_SWITCH_TO_HOR,
+	PHASE_VER_SPLIT_UPRED,       
+    PHASE_HOR_SPLIT_LEFTRED 
 } car_phase_t;
 
 static car_phase_t carPhase = PHASE_VER_GREEN;
@@ -251,34 +250,61 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 	bool needHorGreen_forPedUp   = (pedUpDue   || activePed == ACTIVE_UP);  
 	bool needVerGreen_forPedLeft = (pedLeftDue || activePed == ACTIVE_LEFT);
 
+	if ((pedUpDue || activePed == ACTIVE_UP) && carPhase == PHASE_VER_GREEN) {
+    carPhase = PHASE_VER_SPLIT_UPRED;
+	}
+
+	if ((pedLeftDue || activePed == ACTIVE_LEFT) && carPhase == PHASE_HOR_GREEN) {
+    carPhase = PHASE_HOR_SPLIT_LEFTRED;
+	}
+
+	if (carPhase == PHASE_VER_SPLIT_UPRED) {
+    if (!(pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING)) {
+        carPhase = PHASE_VER_GREEN;
+    }
+}
+
+if (carPhase == PHASE_HOR_SPLIT_LEFTRED) {
+    if (!(pedLeftDue || activePed == ACTIVE_LEFT || pedLeftState == PED_WALKING)) {
+        carPhase = PHASE_HOR_GREEN;
+    }
+}
+
+if (carPhase == PHASE_VER_SPLIT_UPRED || carPhase == PHASE_HOR_SPLIT_LEFTRED) {
+    prevUpCars = upCarsWaiting;
+    prevLeftCars = leftCarsWaiting;
+    return;
+}
+
+
 	if (needHorGreen_forPedUp && needVerGreen_forPedLeft) {
     	if (activePed == ACTIVE_LEFT) needHorGreen_forPedUp = false;
    		else{needVerGreen_forPedLeft = false;}
 	}
 
-	if (needHorGreen_forPedUp) {
+	/*if (needHorGreen_forPedUp) {
 		if (carPhase == PHASE_VER_GREEN) {
         carPhase = PHASE_SWITCH_TO_HOR;
     }
-	}
-	else if (needVerGreen_forPedLeft) {
+	}*/
+	/*else if (needVerGreen_forPedLeft) {
 		if (carPhase == PHASE_HOR_GREEN) {
        	 carPhase = PHASE_SWITCH_TO_VER;
     	}
 	
-	}
+	}*/
 
-	if (needHorGreen_forPedUp && carPhase == PHASE_HOR_GREEN) {
+	/*if (needHorGreen_forPedUp && carPhase == PHASE_HOR_GREEN) {
     	prevUpCars = upCarsWaiting;    	
 		prevLeftCars = leftCarsWaiting;
     	return;
-	}
+	}*/
 
-	if (needVerGreen_forPedLeft && carPhase == PHASE_VER_GREEN) {
+	/*if (needVerGreen_forPedLeft && carPhase == PHASE_VER_GREEN) {
     	prevUpCars = upCarsWaiting;    	
 		prevLeftCars = leftCarsWaiting;
     	return;
-	}
+	}*/
 
     bool upArrived   = (upCarsWaiting   && !prevUpCars);
     bool leftArrived = (leftCarsWaiting && !prevLeftCars);
