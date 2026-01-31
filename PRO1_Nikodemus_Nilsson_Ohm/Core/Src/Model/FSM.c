@@ -22,8 +22,6 @@ static bool initDone = false;
 
 static bool pedUpDue   = false; 
 static bool pedLeftDue = false;
-static bool pedUpRequest   = false; 
-static bool pedLeftRequest = false;
 
 typedef enum {
     CAR_R = 0,
@@ -56,23 +54,12 @@ static void setPedOutputs(void)
 	}
 }
 
-static inline bool PedUp_CarsAreStopped(void) 					// COMPLETELY UNNECCESSRY
-{
-    return (carUpState == CAR_R);
-}
-
-static inline bool PedLeft_CarsAreStopped(void)
-{
-    return (carLeftState == CAR_R);
-}
-
 static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 {
 	switch (pedLeftState)
 	{
 		case PED_PASSIVE:
 			if (input->Button_Pressed_Left) {
-				pedLeftRequest = true;
         		pedLeftDue = false;
 				pedLeftState = PED_WAITING;
 				Delay_Start(TIMER_PED_LEFT_WAIT, lights->Standard_Delay_Times.pedestrianDelay);
@@ -83,24 +70,15 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 		case PED_WAITING:
 			if (Delay_IsDone(TIMER_PED_LEFT_WAIT)) {//Update to add, if the trafic light is green, we will remain in wait, i have not added this yet
 				pedLeftDue = true;
-				}
+			}
 				
-				
-			if (pedLeftDue && (activePed == ACTIVE_NONE) && PedLeft_CarsAreStopped()) {
+			if (pedLeftDue && (activePed == ACTIVE_NONE) && (carLeftState == CAR_R)) {
 					activePed = ACTIVE_LEFT;
 					pedLeftState = PED_WALKING;
 					pedLeftDue = false;
-        			pedLeftRequest = false;
 
 					Delay_Start(TIMER_PED_LEFT_WALK, lights->Standard_Delay_Times.walkingDelay);
-				
-				
 			}
-				/*else if ((activePed== ACTIVE_UP) & (Delay_IsDone(TIMER_PED_LEFT_WAIT)) )
-				{
-					Delay_Start(TIMER_PED_LEFT_WAIT, Delay_Remaining(3));
-				}*/
-			
 		break;
 
 
@@ -121,9 +99,7 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 	{
 		case PED_PASSIVE:
 			if (input->Button_Pressed_Up) {
-				pedUpRequest = true;
         		pedUpDue = false;
-
 				pedUpState = PED_WAITING;
 				Delay_Start(TIMER_PED_UP_WAIT, lights->Standard_Delay_Times.pedestrianDelay);
 			}
@@ -133,20 +109,14 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 		case PED_WAITING:
 			if (Delay_IsDone(TIMER_PED_UP_WAIT)) {
 					pedUpDue = true;
+			}
 
-				}
-			if (pedUpDue && (activePed == ACTIVE_NONE)&& PedUp_CarsAreStopped()) {
+			if (pedUpDue && (activePed == ACTIVE_NONE) && (carUpState == CAR_R)) {
 					activePed = ACTIVE_UP;
 					pedUpState = PED_WALKING;
 					pedUpDue = false;
-        			pedUpRequest = false;
 					Delay_Start(TIMER_PED_UP_WALK, lights->Standard_Delay_Times.walkingDelay);
-				}
-				/*else if ((activePed== ACTIVE_LEFT) & (Delay_IsDone(TIMER_PED_UP_WAIT)))
-				{
-					Delay_Start(TIMER_PED_UP_WAIT, Delay_Remaining(1));
-				}*/
-			
+			}
 		break;
 
 
@@ -164,31 +134,24 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 /*CAR CODE*/
 
-
 static void setCarOutputs(void)
 {
-
     if (carUpState == CAR_G)      Set_Tl_StateVerG();
     else if (carUpState == CAR_O) Set_Tl_StateVerO();
-    else                         Set_Tl_StateVerR();
+    else                          Set_Tl_StateVerR();
 
     if (carLeftState == CAR_G)      Set_Tl_StateHorG();
     else if (carLeftState == CAR_O) Set_Tl_StateHorO();
-    else                           Set_Tl_StateHorR();
+    else                            Set_Tl_StateHorR();
 }
-
-
-
 
 static bool Up_GreenToRed(LightsState_t* lights)
 {
-    
     if (carUpState == CAR_G) {
         carUpState = CAR_O;
         Delay_Start(TIMER_CAR_UP_ORANGE, lights->Standard_Delay_Times.orangeDelay);
         return false;
     }
-
    
     if (carUpState == CAR_O && Delay_IsDone(TIMER_CAR_UP_ORANGE)) {
         carUpState = CAR_R;
@@ -511,8 +474,6 @@ void readAndSet(InputState_t* inputState) {
 		activePed = ACTIVE_NONE;
 		pedUpDue = false;
 		pedLeftDue = false;
-		pedUpRequest = false;
-		pedLeftRequest = false;
 
 		Set_Pl_StatePassiveLeft();
 		Set_Pl_StatePassiveUp();
@@ -535,17 +496,6 @@ void readAndSet(InputState_t* inputState) {
 
 		prevUpCars   = false;
         prevLeftCars = false;
-
-
-		//carUpState   = CAR_G;
-    	//carLeftState = CAR_R;
-
-		//Set_Tl_StateVerG();
-    	//Set_Tl_StateHorR();
-
-		//Delay_Start(TIMER_CAR_UP_GREEN, lightsState->Standard_Delay_Times.greenDelay);
-
-
 	}
 
 	Delay_Tick(DT_MS);
