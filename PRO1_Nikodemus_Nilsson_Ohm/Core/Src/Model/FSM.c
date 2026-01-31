@@ -136,13 +136,24 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 static void setCarOutputs(void)
 {
-    if (carUpState == CAR_G)      Set_Tl_StateVerG();
-    else if (carUpState == CAR_O) Set_Tl_StateVerO();
-    else                          Set_Tl_StateVerR();
+        if (carUpState == CAR_R && pedUpState == PED_WALKING) {
+        Set_Tl_StateVerUpR_DownG();
+    }
+    else {
+        if (carUpState == CAR_G)      Set_Tl_StateVerG();
+        else if (carUpState == CAR_O) Set_Tl_StateVerO();
+        else                          Set_Tl_StateVerR();
+    }
 
-    if (carLeftState == CAR_G)      Set_Tl_StateHorG();
-    else if (carLeftState == CAR_O) Set_Tl_StateHorO();
-    else                            Set_Tl_StateHorR();
+    
+    if (carLeftState == CAR_R && pedLeftState == PED_WALKING) {
+        Set_Tl_StateHorLeftR_RightG();
+    }
+    else {
+        if (carLeftState == CAR_G)      Set_Tl_StateHorG();
+        else if (carLeftState == CAR_O) Set_Tl_StateHorO();
+        else                            Set_Tl_StateHorR();
+    }
 }
 
 static bool Up_GreenToRed(LightsState_t* lights)

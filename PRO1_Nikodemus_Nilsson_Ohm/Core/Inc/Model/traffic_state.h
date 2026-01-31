@@ -23,6 +23,8 @@ void Set_Tl_StateVerO(void);
 void Set_Tl_StateHorO(void);
 void Set_Tl_StateVerR(void);
 void Set_Tl_StateHorR(void);
+void Set_Tl_StateVerUpR_DownG(void);
+void Set_Tl_StateHorLeftR_RightG(void);
 
 
 #endif
