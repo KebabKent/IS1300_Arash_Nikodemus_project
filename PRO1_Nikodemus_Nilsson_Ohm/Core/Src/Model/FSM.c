@@ -19,6 +19,11 @@ static ped_state_t pedUpState = PED_PASSIVE;
 static active_ped_t activePed = ACTIVE_NONE;
 static bool initDone = false;
 
+static bool pedUpDue   = false; 
+static bool pedLeftDue = false;
+static bool pedUpRequest   = false; 
+static bool pedLeftRequest = false;
+
 
 static void setPedOutputs(void)
 {
