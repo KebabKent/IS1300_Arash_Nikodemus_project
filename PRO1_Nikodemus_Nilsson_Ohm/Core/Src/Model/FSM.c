@@ -45,12 +45,24 @@ static void setPedOutputs(void)
 	}
 }
 
+static inline bool PedUp_CarsAreStopped(void)
+{
+    return (carUpState == CAR_R);
+}
+
+static inline bool PedLeft_CarsAreStopped(void)
+{
+    return (carLeftState == CAR_R);
+}
+
 static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 {
 	switch (pedLeftState)
 	{
 		case PED_PASSIVE:
 			if (input->Button_Pressed_Left) {
+				pedLeftRequest = true;
+        		pedLeftDue = false;
 				pedLeftState = PED_WAITING;
 				Delay_Start(TIMER_PED_LEFT_WAIT, lights->Standard_Delay_Times.pedestrianDelay);
 			}
@@ -59,16 +71,25 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 
 		case PED_WAITING:
 			if (Delay_IsDone(TIMER_PED_LEFT_WAIT)) {//Update to add, if the trafic light is green, we will remain in wait, i have not added this yet
-				if (activePed == ACTIVE_NONE) {
+				pedLeftDue = true;
+				}
+				
+				
+			if (pedLeftDue && (activePed == ACTIVE_NONE) && PedLeft_CarsAreStopped()) {
 					activePed = ACTIVE_LEFT;
 					pedLeftState = PED_WALKING;
+					pedLeftDue = false;
+        			pedLeftRequest = false;
+
 					Delay_Start(TIMER_PED_LEFT_WALK, lights->Standard_Delay_Times.walkingDelay);
-				}
-				else if ((activePed== ACTIVE_UP) & (Delay_IsDone(TIMER_PED_LEFT_WAIT)))
+				
+				
+			}
+				/*else if ((activePed== ACTIVE_UP) & (Delay_IsDone(TIMER_PED_LEFT_WAIT)) )
 				{
 					Delay_Start(TIMER_PED_LEFT_WAIT, Delay_Remaining(3));
-				}
-			}
+				}*/
+			
 		break;
 
 
@@ -89,6 +110,9 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 	{
 		case PED_PASSIVE:
 			if (input->Button_Pressed_Up) {
+				pedUpRequest = true;
+        		pedUpDue = false;
+
 				pedUpState = PED_WAITING;
 				Delay_Start(TIMER_PED_UP_WAIT, lights->Standard_Delay_Times.pedestrianDelay);
 			}
@@ -97,16 +121,21 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 		case PED_WAITING:
 			if (Delay_IsDone(TIMER_PED_UP_WAIT)) {
-				if (activePed == ACTIVE_NONE) {
+					pedUpDue = true;
+
+				}
+			if (pedUpDue && (activePed == ACTIVE_NONE)&& PedUp_CarsAreStopped()) {
 					activePed = ACTIVE_UP;
 					pedUpState = PED_WALKING;
+					pedUpDue = false;
+        			pedUpRequest = false;
 					Delay_Start(TIMER_PED_UP_WALK, lights->Standard_Delay_Times.walkingDelay);
 				}
-				else if ((activePed== ACTIVE_LEFT) & (Delay_IsDone(TIMER_PED_UP_WAIT)))
+				/*else if ((activePed== ACTIVE_LEFT) & (Delay_IsDone(TIMER_PED_UP_WAIT)))
 				{
 					Delay_Start(TIMER_PED_UP_WAIT, Delay_Remaining(1));
-				}
-			}
+				}*/
+			
 		break;
 
 
@@ -234,6 +263,38 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 {
     bool upCars   = input->Car_Pesent_Up   || input->Car_Pesent_Down;
     bool leftCars = input->Car_Pesent_Left || input->Car_Pesent_Right;
+
+	bool needHorGreen_forPedUp   = (pedUpDue   || activePed == ACTIVE_UP);  
+	bool needVerGreen_forPedLeft = (pedLeftDue || activePed == ACTIVE_LEFT);
+
+	if (needHorGreen_forPedUp && needVerGreen_forPedLeft) {
+    	if (activePed == ACTIVE_LEFT) needHorGreen_forPedUp = false;
+   		else{needVerGreen_forPedLeft = false;}
+	}
+
+	if (needHorGreen_forPedUp) {
+		if (carPhase == PHASE_VER_GREEN) {
+        carPhase = PHASE_SWITCH_TO_HOR;
+    }
+	}
+	else if (needVerGreen_forPedLeft) {
+		if (carPhase == PHASE_HOR_GREEN) {
+       	 carPhase = PHASE_SWITCH_TO_VER;
+    	}
+	
+	}
+
+	if (needHorGreen_forPedUp && carPhase == PHASE_HOR_GREEN) {
+    	prevUpCars = upCars;
+    	prevLeftCars = leftCars;
+    	return;
+	}
+
+	if (needVerGreen_forPedLeft && carPhase == PHASE_VER_GREEN) {
+    	prevUpCars = upCars;
+    	prevLeftCars = leftCars;
+    	return;
+	}
 
     bool upArrived   = (upCars   && !prevUpCars);
     bool leftArrived = (leftCars && !prevLeftCars);
@@ -444,6 +505,10 @@ void readAndSet(InputState_t* inputState) {
 		pedLeftState = PED_PASSIVE;
 		pedUpState = PED_PASSIVE;
 		activePed = ACTIVE_NONE;
+		pedUpDue = false;
+		pedLeftDue = false;
+		pedUpRequest = false;
+		pedLeftRequest = false;
 
 		Set_Pl_StatePassiveLeft();
 		Set_Pl_StatePassiveUp();
