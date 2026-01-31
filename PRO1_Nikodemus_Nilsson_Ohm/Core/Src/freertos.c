@@ -180,6 +180,7 @@ void StartFSM_Task(void *argument)
 {
   /* USER CODE BEGIN StartFSM_Task */
   /* Infinite loop */
+	FSM_Init();
 	InputState_t inputState;
 
 	for(;;)

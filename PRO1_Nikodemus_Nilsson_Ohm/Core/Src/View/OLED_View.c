@@ -58,17 +58,17 @@ void set_delay(char text[], uint8_t pos, uint16_t delay, uint16_t standardDelayT
 void update_OLED(LightsState_t* state) {
 	ssd1306_Fill(White);
 
-	set_delay("P1", 0, state->Horizontal_Traffic_Light_State.Delays.pedestrianDelay, state->Standard_Delay_Times.pedestrianDelay);
-	set_delay("W1", 16, state->Horizontal_Traffic_Light_State.Delays.walkingDelay, state->Standard_Delay_Times.walkingDelay);
+	set_delay("P1", 0, state->Vertical_Traffic_Light_State.Delays.pedestrianDelay, state->Standard_Delay_Times.pedestrianDelay);
+	set_delay("W1", 16, state->Vertical_Traffic_Light_State.Delays.walkingDelay, state->Standard_Delay_Times.walkingDelay);
 
-	set_delay("P2", 32, state->Vertical_Traffic_Light_State.Delays.pedestrianDelay, state->Standard_Delay_Times.pedestrianDelay);
-	set_delay("W2", 48, state->Vertical_Traffic_Light_State.Delays.walkingDelay, state->Standard_Delay_Times.walkingDelay);
+	set_delay("P2", 32, state->Horizontal_Traffic_Light_State.Delays.pedestrianDelay, state->Standard_Delay_Times.pedestrianDelay);
+	set_delay("W2", 48, state->Horizontal_Traffic_Light_State.Delays.walkingDelay, state->Standard_Delay_Times.walkingDelay);
 
-	set_delay("G1", 64, state->Horizontal_Traffic_Light_State.Delays.greenDelay, state->Standard_Delay_Times.greenDelay);
-	set_delay("R1", 80, state->Horizontal_Traffic_Light_State.Delays.redDelay, state->Standard_Delay_Times.redDelay);
+	set_delay("G1", 64, state->Vertical_Traffic_Light_State.Delays.greenDelay, state->Standard_Delay_Times.greenDelay);
+	set_delay("R1", 80, state->Vertical_Traffic_Light_State.Delays.redDelay, state->Standard_Delay_Times.redDelay);
 
-	set_delay("G2", 96, state->Vertical_Traffic_Light_State.Delays.greenDelay, state->Standard_Delay_Times.greenDelay);
-	set_delay("R2", 112, state->Vertical_Traffic_Light_State.Delays.redDelay, state->Standard_Delay_Times.redDelay);
+	set_delay("G2", 96, state->Horizontal_Traffic_Light_State.Delays.greenDelay, state->Standard_Delay_Times.greenDelay);
+	set_delay("R2", 112, state->Horizontal_Traffic_Light_State.Delays.redDelay, state->Standard_Delay_Times.redDelay);
 
 	ssd1306_UpdateScreen();
 }

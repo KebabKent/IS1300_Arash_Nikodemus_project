@@ -18,4 +18,6 @@ typedef enum {//we need sth to keep track if one of the pedestrains is active so
 
 void readAndSet(InputState_t* inputState);
 
+void FSM_Init(void);
+
 #endif

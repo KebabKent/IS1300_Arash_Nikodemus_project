@@ -9,7 +9,7 @@ static int32_t timers[TIMER_COUNT];
 void Delay_Init(void)
 {
     for(int i = 0; i < TIMER_COUNT; i++){
-    timers[i] = 0;
+    	timers[i] = 0;
     }
 }
 
@@ -17,9 +17,10 @@ void Delay_Init(void)
 void Delay_Tick(uint32_t dt_ms){
 
     for(int i = 0; i < TIMER_COUNT; i++){
-    if (timers[i] > 0){
-        timers[i] -= (int32_t)dt_ms;
-        if (timers[i] < 0) timers[i] = 0;
+		if (timers[i] > 0) {
+			timers[i] -= (int32_t)dt_ms;
+			if (timers[i] < 0)
+				timers[i] = 0;
         }
     }
 }
