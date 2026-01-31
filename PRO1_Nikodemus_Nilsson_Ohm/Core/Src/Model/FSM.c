@@ -37,14 +37,13 @@ static car_color_t carLeftState = CAR_R;
 
 static void setPedOutputs(void)
 {
-	Set_Pl_StatePassiveLeft();//Basically no need for the if else, because these 2 are the default states for both pedestrains, if we are not waiting, or walking then it must be red
-	Set_Pl_StatePassiveUp();
-
 	if (pedLeftState == PED_WAITING) {
 		Set_Pl_StateWaitingLeft(); 
 	}
 	else if (pedLeftState == PED_WALKING) {
 		Set_Pl_StateWalkingLeft(); 
+	} else {
+		Set_Pl_StatePassiveLeft();
 	}
 
 	if (pedUpState == PED_WAITING) {
@@ -52,10 +51,12 @@ static void setPedOutputs(void)
 	}
 	else if (pedUpState == PED_WALKING) {
 		Set_Pl_StateWalkingUp(); 
+	} else {
+		Set_Pl_StatePassiveUp();
 	}
 }
 
-static inline bool PedUp_CarsAreStopped(void)
+static inline bool PedUp_CarsAreStopped(void) 					// COMPLETELY UNNECCESSRY
 {
     return (carUpState == CAR_R);
 }
