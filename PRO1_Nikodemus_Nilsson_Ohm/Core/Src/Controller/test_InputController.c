@@ -44,7 +44,6 @@ void test_readMomentaryButton() {
     }
 }
 
-// void readToggleSwitch(GPIO_TypeDef* Port, uint16_t Pin, bool* outState)
 void test_readToggleSwitch() {
     uint8_t data[3] = {0,0,0};
 
@@ -101,7 +100,57 @@ void test_readToggleSwitch() {
 	HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_SET);
 }
 
+/**
+ * @brief Integration test for the high-level input controller and global state.
+ * * This test verifies that readAndSetInputsState() correctly updates the global
+ * InputState_t structure by reading physical GPIO pins (buttons and switches).
+ * * Logic:
+ * 1. Retrieves a pointer to the global InputState via Return_InputState().
+ * 2. Runs a loop for 10 seconds where it polls inputs.
+ * 3. Maps boolean flags from the global state to specific bits in a 3-byte
+ * SPI buffer (data[0-2]).
+ * 4. Transmits the buffer to Shift Registers to provide visual LED feedback.
+ * * Visual Mapping:
+ * - data[2] bit 3 (0x8): Pedestrian Left Button (Momentary)
+ * - data[1] bit 3 (0x8): Pedestrian Up Button (Momentary)
+ * - data[2] bit 0 (0x1): Car Present Left (Toggle)
+ * - data[1] bit 0 (0x1): Car Present Down (Toggle)
+ * - data[0] bit 0 (0x1): Car Present Right (Toggle)
+ * - data[0] bit 3 (0x8): Car Present Up (Toggle)
+ * * @note Momentary button LEDs (data[2]/data[1] bit 0x8) will only flash
+ * briefly per press due to the edge-detection logic.
+ */
 void test_readAndSetInputsState() {
+    InputState_t* state = Return_InputState();
+
+    uint8_t data[3] = {0, 0, 0};
+    uint32_t startTime = HAL_GetTick();
+    const uint32_t testDuration = 10000;
+
+    while ((HAL_GetTick() - startTime) < testDuration) {
+        readAndSetInputsState();
+
+        if (state->Button_Pressed_Left) data[2] |= 0x8;
+        if (state->Button_Pressed_Up)   data[1] |= 0x8;
+
+        if (state->Car_Pesent_Left)  data[2] |= 0x1;
+        if (state->Car_Pesent_Down)  data[1] |= 0x1;
+        if (state->Car_Pesent_Right) data[0] |= 0x1;
+        if (state->Car_Pesent_Up)    data[0] |= 0x8;
+
+        HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_RESET);
+        HAL_SPI_Transmit(&hspi3, data, 3, 100);
+        HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_SET);
+
+        HAL_Delay(10);
+    }
 
 
+    data[0] = 0;
+	data[1] = 0;
+	data[2] = 0;
+
+    HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi3, data, 3, 100);
+    HAL_GPIO_WritePin(SR_STCP_GPIO_Port, SR_STCP_Pin, GPIO_PIN_SET);
 }
