@@ -141,7 +141,18 @@ void Set_Tl_StateVerUpR_DownG(void) {
     lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
 }
 
+
+void Set_Tl_StateVerUpR_DownG(void) {
+    lightState.Vertical_Traffic_Light_State.Light_State_LU = RED_Tr;
+    lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
+}
+
 void Set_Tl_StateHorLeftR_RightG(void) {
     lightState.Horizontal_Traffic_Light_State.Light_State_LU = RED_Tr;
     lightState.Horizontal_Traffic_Light_State.Light_State_RD = GREEN_Tr;
+}
+
+void Set_Tl_StateHorLeftG_RightR(void) {
+    lightState.Horizontal_Traffic_Light_State.Light_State_LU = GREEN_Tr; 
+    lightState.Horizontal_Traffic_Light_State.Light_State_RD = RED_Tr;  
 }
