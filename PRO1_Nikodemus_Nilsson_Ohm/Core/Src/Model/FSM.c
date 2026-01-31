@@ -263,7 +263,7 @@ void carsMultipleDirections(InputState_t* input) {
 void Car_Tick(InputState_t* input)
 {
 	if (input->Button_Pressed_Left || Delay_IsDone(TIMER_PED_LEFT_WAIT) || Delay_IsDone(TIMER_PED_LEFT_WALK) ||
-			input->Button_Pressed_Up || Delay_IsDone(TIMER_PED_UP_WAIT) || Delay_IsDone(TIMER_PED_UP_WALK)) {
+			input->Button_Pressed_Up || Delay_IsDone(TIMER_PED_UP_WAIT) || Delay_IsDone(TIMER_PED_UP_WALK) || currState == State31) {
 		passiveState(input);
 		carUpOrDown(input);
 		carLeftOrRight(input);
@@ -271,20 +271,37 @@ void Car_Tick(InputState_t* input)
 	}
 }
 
+bool gg = true;
+
 void pedUp(InputState_t* input) {
 	LightsState_t* lightsState = Return_LightsState();
 
 	if (input->Button_Pressed_Up) {
-		lightsState->Vertical_Traffic_Light_State.toggle = true;
 
-		if (currState == State1 && !Delay_IsDone(TIMER_PED_UP_WAIT)) {
+		if (currState == State1 && Delay_IsDone(TIMER_PED_UP_WAIT) && gg) {
+			lightsState->Vertical_Traffic_Light_State.toggle = true;
+			gg = false;
 			Delay_Start(TIMER_PED_UP_WAIT, lightsState->Standard_Delay_Times.pedestrianDelay);
 		}
 
 		if (currState == State1 && Delay_IsDone(TIMER_PED_UP_WAIT)) {
+			lightsState->Vertical_Traffic_Light_State.toggle = false;
 			lastState = State1;
 			currState = State31;
 			Delay_Start(TIMER_CAR_UP_ORANGE, lightsState->Standard_Delay_Times.orangeDelay);
+		}
+
+		if (currState == State31 && Delay_IsDone(TIMER_CAR_UP_ORANGE)) {
+			if (lastState == State1) {
+				lastState = State31;
+				currState = State11;
+				Delay_Start(TIMER_PED_UP_WALK, lightsState->Standard_Delay_Times.walkingDelay);
+			} else if (lastState == State2) {
+				lastState = State3;
+				currState = State1;
+				Delay_Start(TIMER_CAR_UP_GREEN, lightsState->Standard_Delay_Times.greenDelay);
+				Delay_Start(TIMER_CAR_LEFT_RED, lightsState->Standard_Delay_Times.redDelay);
+			}
 		}
 
 	}
