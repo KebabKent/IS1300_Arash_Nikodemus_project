@@ -223,13 +223,22 @@ void carsMultipleDirections(InputState_t* input) {
 	LightsState_t* lightsState = Return_LightsState();
 
 	if ((input->Car_Pesent_Left || input->Car_Pesent_Right) && (input->Car_Pesent_Up || input->Car_Pesent_Down)) {
-		if (currState == State1 && Delay_IsDone(TIMER_CAR_LEFT_RED)) {
+		if (currState == State1 && !Delay_IsDone(TIMER_CAR_UP_GREEN) && Delay_IsDone(TIMER_CAR_UP_RED)) {
+			Delay_Start(TIMER_CAR_UP_RED, lightsState->Standard_Delay_Times.redDelay);
+		}
+
+		if (currState == State2 && !Delay_IsDone(TIMER_CAR_LEFT_GREEN) && Delay_IsDone(TIMER_CAR_LEFT_RED)) {
+			Delay_Start(TIMER_CAR_LEFT_RED, lightsState->Standard_Delay_Times.redDelay);
+		}
+
+
+		if (currState == State1 && Delay_IsDone(TIMER_CAR_UP_RED)) {
 			lastState = State1;
 			currState = State3;
 			Delay_Start(TIMER_CAR_UP_ORANGE, lightsState->Standard_Delay_Times.orangeDelay);
 		}
 
-		if (currState == State2 && Delay_IsDone(TIMER_CAR_UP_RED)) {
+		if (currState == State2 && Delay_IsDone(TIMER_CAR_LEFT_RED)) {
 			lastState = State2;
 			currState = State3;
 			Delay_Start(TIMER_CAR_LEFT_ORANGE, lightsState->Standard_Delay_Times.orangeDelay);
