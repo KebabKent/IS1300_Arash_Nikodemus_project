@@ -98,8 +98,8 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 				pedLeftDue = true;
 			}
 			bool pedLeftCarsStopped = (carLeftState == CAR_R) || (carPhase == PHASE_HOR_SPLIT_LEFTRED);	
-			bool pedUpCarsStopped = ((carPhase == PHASE_VER_SPLIT_UPRED) && Delay_IsDone(TIMER_CAR_UP_ORANGE)); 
-			if (pedLeftDue && (activePed == ACTIVE_NONE) && (pedLeftCarsStopped || pedUpCarsStopped)) {
+			bool pedUpCarsStopped = ((lights->Vertical_Traffic_Light_State.Light_State_LU = RED_Tr)); 
+			if (pedLeftDue && (activePed == ACTIVE_NONE) && (pedLeftCarsStopped & pedUpCarsStopped)) {
 					activePed = ACTIVE_LEFT;
 					pedLeftState = PED_WALKING;
 					pedLeftDue = false;
@@ -138,8 +138,9 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 					pedUpDue = true;
 			}
 			bool pedUpCarsStopped = (carUpState == CAR_R) || (carPhase == PHASE_VER_SPLIT_UPRED);
-			bool pedLeftCarsStopped= (carPhase== PHASE_HOR_SPLIT_LEFTRED && Delay_IsDone(TIMER_CAR_LEFT_ORANGE));
-			if (pedUpDue && (activePed == ACTIVE_NONE) && ( (pedUpCarsStopped) || (pedLeftCarsStopped))) {
+			//bool pedRightCarsStopped= (carPhase== PHASE_HOR_SPLIT_RIGHTRED && Delay_IsDone(TIMER_CAR_LEFT_ORANGE));
+			bool pedRightCarsStopped = lights->Horizontal_Traffic_Light_State.Light_State_RD == RED_Tr;  
+			if (pedUpDue && (activePed == ACTIVE_NONE) && ( (pedUpCarsStopped) && (pedRightCarsStopped))) {
 					activePed = ACTIVE_UP;
 					pedUpState = PED_WALKING;
 					pedUpDue = false;
