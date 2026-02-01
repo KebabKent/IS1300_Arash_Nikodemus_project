@@ -16,7 +16,7 @@ void State_Init(void) {
 	lightState.Standard_Delay_Times.pedestrianDelay = 4000;
 	lightState.Standard_Delay_Times.walkingDelay = 4000;
 	lightState.Standard_Delay_Times.greenDelay = 4000;
-	lightState.Standard_Delay_Times.orangeDelay = 4000;
+	lightState.Standard_Delay_Times.orangeDelay = 1000;
 	lightState.Standard_Delay_Times.redDelay = 4000;
 
 	// Horizontal
