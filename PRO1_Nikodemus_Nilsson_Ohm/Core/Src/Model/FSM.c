@@ -97,9 +97,9 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 			if (Delay_IsDone(TIMER_PED_LEFT_WAIT)) {
 				pedLeftDue = true;
 			}
-			bool pedLeftCarsStopped = (carLeftState == CAR_R) || (carPhase == PHASE_HOR_SPLIT_LEFTRED);	
+			bool pedLeftCarsStopped = (carLeftState == CAR_R) || (carPhase == PHASE_HOR_SPLIT_LEFTRED)  || (carPhase == PHASE_VER_SPLIT_UPRED);	
 			bool pedUpCarsStopped = ((lights->Vertical_Traffic_Light_State.Light_State_LU = RED_Tr)); 
-			if (pedLeftDue && (activePed == ACTIVE_NONE) && (pedLeftCarsStopped & pedUpCarsStopped)) {
+			if (pedLeftDue && (activePed == ACTIVE_NONE) && (pedLeftCarsStopped && pedUpCarsStopped)) {
 					activePed = ACTIVE_LEFT;
 					pedLeftState = PED_WALKING;
 					pedLeftDue = false;
