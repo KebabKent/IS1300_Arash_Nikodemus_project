@@ -271,23 +271,57 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 	bool upPedActive   = (pedUpState   == PED_WALKING) || pedUpDue   || (activePed == ACTIVE_UP);
 
 
-	if ((pedUpDue || activePed == ACTIVE_UP) && carPhase == PHASE_VER_GREEN) {
-    	carPhase = PHASE_VER_SPLIT_UPRED;
+	if (carPhase == PHASE_VER_GREEN && (leftPedActive || upPedActive)) {
+		Timer_Stop(TIMER_CAR_UP_RED);
+		upRedWaitArmed = false;
+        carPhase = PHASE_VER_SPLIT_UPORANGE;
+        Delay_Start(TIMER_CAR_UP_ORANGE, lights->Standard_Delay_Times.orangeDelay);
 	}
 
-	if ((pedLeftDue || activePed == ACTIVE_LEFT || pedLeftState == PED_WALKING) && carPhase == PHASE_VER_GREEN) {
-    	carPhase = PHASE_VER_SPLIT_UPRED;
+	if (carPhase == PHASE_VER_SPLIT_UPORANGE) {
+    	if (Delay_IsDone(TIMER_CAR_UP_ORANGE)) {
+        	carPhase = PHASE_VER_SPLIT_UPRED;
+    	}
+    	return;
+	}
+	//return state fix for orange delay back needed
+	if (carPhase == PHASE_VER_SPLIT_UPRED) {
+    	if (!(leftPedActive || upPedActive)) {
+        	carPhase = PHASE_VER_GREEN;
+   		}
 	}
 
-	if ((pedLeftDue || activePed == ACTIVE_LEFT) && carPhase == PHASE_HOR_GREEN) {
-    	carPhase = PHASE_HOR_SPLIT_LEFTRED;
+//////// 
+	if (leftPedActive && carPhase == PHASE_HOR_GREEN) {
+		Timer_Stop(TIMER_CAR_LEFT_RED);
+		leftRedWaitArmed = false;
+		carPhase = PHASE_HOR_SPLIT_LEFTORANGE;
+        Delay_Start(TIMER_CAR_LEFT_ORANGE, lights->Standard_Delay_Times.orangeDelay);
+	}
+
+	if (upPedActive && carPhase == PHASE_HOR_GREEN) {
+		Timer_Stop(TIMER_CAR_LEFT_RED);
+		leftRedWaitArmed = false;
+    	carPhase = PHASE_HOR_SPLIT_RIGHTORANGE;
+		        Delay_Start(TIMER_CAR_LEFT_ORANGE, lights->Standard_Delay_Times.orangeDelay);
+	}
+
+	if (carPhase == PHASE_HOR_SPLIT_LEFTORANGE) {
+    	if (Delay_IsDone(TIMER_CAR_LEFT_ORANGE)) {
+        	carPhase = PHASE_HOR_SPLIT_LEFTRED;
+    	}
+    return;
+	}
+
+	if (carPhase == PHASE_HOR_SPLIT_RIGHTORANGE) {
+    	if (Delay_IsDone(TIMER_CAR_LEFT_ORANGE)) {
+        	carPhase = PHASE_HOR_SPLIT_RIGHTRED;
+    	}
+    	return;
 	}
 
 
-	if ((pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING) &&
-    	carPhase == PHASE_HOR_GREEN) {
-    	carPhase = PHASE_HOR_SPLIT_RIGHTRED;
-	}
+	
 
 	
 
@@ -305,12 +339,7 @@ if (carPhase == PHASE_HOR_SPLIT_RIGHTRED) {
     }
 }
 
-//return state
-	if (carPhase == PHASE_VER_SPLIT_UPRED) {
-    if (!(pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING)) {
-        carPhase = PHASE_VER_GREEN;
-    }
-}
+
 
 
 
