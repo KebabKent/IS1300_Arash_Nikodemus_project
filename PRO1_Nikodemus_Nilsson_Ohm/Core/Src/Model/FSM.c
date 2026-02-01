@@ -98,7 +98,8 @@ static void PedLeft_Tick(LightsState_t* lights, InputState_t* input)
 				pedLeftDue = true;
 			}
 			bool pedLeftCarsStopped = (carLeftState == CAR_R) || (carPhase == PHASE_HOR_SPLIT_LEFTRED);	
-			if (pedLeftDue && (activePed == ACTIVE_NONE) && pedLeftCarsStopped) {
+			bool pedUpCarsStopped = carPhase == PHASE_VER_SPLIT_UPRED; //newly added
+			if (pedLeftDue && (activePed == ACTIVE_NONE) && (pedLeftCarsStopped || pedUpCarsStopped)) {
 					activePed = ACTIVE_LEFT;
 					pedLeftState = PED_WALKING;
 					pedLeftDue = false;
@@ -137,8 +138,8 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 					pedUpDue = true;
 			}
 			bool pedUpCarsStopped = (carUpState == CAR_R) || (carPhase == PHASE_VER_SPLIT_UPRED);
-
-			if (pedUpDue && (activePed == ACTIVE_NONE) && (pedUpCarsStopped)) {
+			bool pedLeftCarsStopped= (carPhase== PHASE_HOR_SPLIT_LEFTRED);
+			if (pedUpDue && (activePed == ACTIVE_NONE) && ( (pedUpCarsStopped) || pedLeftCarsStopped)) {
 					activePed = ACTIVE_UP;
 					pedUpState = PED_WALKING;
 					pedUpDue = false;
