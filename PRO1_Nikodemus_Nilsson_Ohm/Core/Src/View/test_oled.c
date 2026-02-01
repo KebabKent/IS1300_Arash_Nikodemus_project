@@ -1,10 +1,4 @@
-/**
- * @file test_oled.c
- * @brief Test suite for OLED View verification.
- * @author [Your Name]
- * @version 1.0
- * @date [Current Date]
- */
+
 
 #include "View/test_oled.h"
 #include "View/OLED_View.h"
@@ -18,12 +12,7 @@ void Test_OLED(void) {
 	Test_update_OLED();
 }
 
-/**
- * @brief Verifies the progress bar scaling logic.
- * * Manually tests the set_delay function with specific values to verify
- * that the rectangle fill height scales correctly to 50 pixels.
- * @return void
- */
+
 void Test_set_delay(void) {
     ssd1306_Fill(White);
 
@@ -36,12 +25,7 @@ void Test_set_delay(void) {
     HAL_Delay(2000);
 }
 
-/**
- * @brief Integration test for the full OLED update function.
- * * Simulates different system states to verify that all 8 progress bars
- * (Pedestrian, Walking, Green, Red for both roads) render in the correct positions.
- * @return void
- */
+
 void Test_update_OLED(void) {
     LightsState_t testState;
 

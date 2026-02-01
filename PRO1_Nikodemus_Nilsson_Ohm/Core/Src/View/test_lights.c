@@ -1,29 +1,10 @@
-/**
- * @file test_lights.c
- * @brief Test suite for Traffic Light SPI Driver verification.
- *
- * This file contains test functions designed to verify the correct operation
- * of the traffic light hardware driver. It follows the TDD approach
- * outlined in the course manual, ensuring individual driver components
- * (bit-shifting logic) work before integration.
- *
- * @author [Your Name]
- * @version 1.0
- * @date [Current Date]
- */
+
 #include "View/test_lights.h"
 #include "View/TrafficLight_SPI_Driver.h"
 #include "main.h"
 #include "spi.h"
 
-/**
- * @brief Master runner for all Traffic Light tests.
- *
- * Calls all individual unit and integration tests in sequence.
- * Intended to be run once at startup when RUN_TEST_PROGRAM is defined.
- *
- * @return void
- */
+
 void Test_Lights(void) {
 	test_set_Traffic_Light();
 	test_set_Pedestrian_Light();
@@ -33,16 +14,7 @@ void Test_Lights(void) {
 
 }
 
-/**
- * @brief Verifies the set_Traffic_Light bit-shifting logic.
- *
- * Iterates through all possible Traffic Light states (RED, ORANGE, GREEN)
- * for multiple light instances. It manually constructs the SPI data buffer
- * and transmits it to the shift registers to allow visual verification
- * of the correct color sequence.
- *
- * @return void
- */
+
 void test_set_Traffic_Light() {
 	uint8_t data[3];
 	TrafficLightState state[3] = {RED_Tr, ORANGE_Tr, GREEN_Tr};
@@ -67,15 +39,7 @@ void test_set_Traffic_Light() {
 	}
 }
 
-/**
- * @brief Verifies the set_Pedestrian_Light bit-shifting logic.
- *
- * Iterates through Pedestrian states (RED, GREEN) for multiple light
- * instances. Transmits data via SPI for visual verification that
- * the pedestrian LEDs light up correctly without affecting other bits.
- *
- * @return void
- */
+
 void test_set_Pedestrian_Light() {
 	uint8_t data[3];
 	PedestrianLightState state[3] = {RED_Pd, GREEN_Pd};
@@ -97,15 +61,6 @@ void test_set_Pedestrian_Light() {
 	}
 }
 
-/**
- * @brief Verifies the pedestrian blue light toggling logic.
- *
- * Simulates a blinking sequence by calling toggle_Pedestrian_Blue
- * in a loop with delays. Visually confirms that the blue indicator
- * bit is set and cleared at the correct frequency.
- *
- * @return void
- */
 void test_toggle_Pedestrian_Blue() {
 	uint8_t data[3];
 	uint16_t toggleFrequenzy = 500;
@@ -127,15 +82,7 @@ void test_toggle_Pedestrian_Blue() {
 	}
 }
 
-/**
- * @brief Logic check for full state decoding.
- *
- * Verifies that the Decode_State function correctly converts a
- * complete LightsState_t model into the correct 3-byte SPI array.
- * This ensures no overlapping bits when multiple lights are active simultaneously.
- *
- * @return void
- */
+
 void test_Decode_State() {
 	LightsState_t test_state;
 	uint8_t data[3];
@@ -159,16 +106,7 @@ void test_Decode_State() {
 	HAL_Delay(2000);
 }
 
-/**
- * @brief Integration test for the full hardware abstraction layer.
- *
- * Simulates real-world traffic scenarios (All Green, All Red, Pedestrian Blink)
- * using the high-level Set_TrafficLights function. This serves as the final
- * verification that the Model correctly controls the View (Hardware) before
- * the FSM takes over.
- *
- * @return void
- */
+
 void test_Set_TrafficLights() {
 	LightsState_t state;
 
