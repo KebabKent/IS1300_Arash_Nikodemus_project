@@ -32,6 +32,26 @@ typedef enum {
 static car_color_t carUpState   = CAR_G;
 static car_color_t carLeftState = CAR_R;
 
+typedef enum {
+    PHASE_VER_GREEN,
+    PHASE_HOR_GREEN,
+    PHASE_SWITCH_TO_VER,
+    PHASE_SWITCH_TO_HOR,
+	PHASE_VER_SPLIT_UPRED,
+    PHASE_HOR_SPLIT_LEFTRED,
+	PHASE_HOR_SPLIT_RIGHTRED
+} car_phase_t;
+
+static car_phase_t carPhase = PHASE_VER_GREEN;
+
+static bool prevUpCars   = false;
+static bool prevLeftCars = false;
+static inline void Timer_Stop(TimerId id) { Delay_Start(id, 0); }
+
+
+static bool upRedWaitArmed = false;
+static bool leftRedWaitArmed = false;
+
 
 static void setPedOutputs(void)
 {
@@ -218,26 +238,6 @@ static bool Left_RedToGreen(LightsState_t* lights)
 
     return false;
 }
-
-typedef enum {
-    PHASE_VER_GREEN,
-    PHASE_HOR_GREEN,
-    PHASE_SWITCH_TO_VER,
-    PHASE_SWITCH_TO_HOR,
-	PHASE_VER_SPLIT_UPRED,       
-    PHASE_HOR_SPLIT_LEFTRED,
-	PHASE_HOR_SPLIT_RIGHTRED
-} car_phase_t;
-
-static car_phase_t carPhase = PHASE_VER_GREEN;
-
-static bool prevUpCars   = false;
-static bool prevLeftCars = false;
-static inline void Timer_Stop(TimerId id) { Delay_Start(id, 0); }
-
-
-static bool upRedWaitArmed = false;
-static bool leftRedWaitArmed = false;
 
 static void Car_Tick(LightsState_t* lights, InputState_t* input)
 {
