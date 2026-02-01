@@ -136,14 +136,42 @@ void Set_Tl_StateHorR(void) {
 	lightState.Horizontal_Traffic_Light_State.Light_State_RD = RED_Tr;
 }
 
+
+void Set_Tl_StateVerUpG_DownG(void) {
+    lightState.Vertical_Traffic_Light_State.Light_State_LU = GREEN_Tr;
+    lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
+}
+
+void Set_Tl_StateVerUpO_DownG(void) {
+    lightState.Vertical_Traffic_Light_State.Light_State_LU = ORANGE_Tr;
+    lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
+}
+
 void Set_Tl_StateVerUpR_DownG(void) {
     lightState.Vertical_Traffic_Light_State.Light_State_LU = RED_Tr;
     lightState.Vertical_Traffic_Light_State.Light_State_RD = GREEN_Tr;
 }
+// /////////////////////
+void Set_Tl_StateHorLeftO_RightG(void) {
+    lightState.Horizontal_Traffic_Light_State.Light_State_LU = ORANGE_Tr;
+    lightState.Horizontal_Traffic_Light_State.Light_State_RD = GREEN_Tr;
+}
+
 
 void Set_Tl_StateHorLeftR_RightG(void) {
     lightState.Horizontal_Traffic_Light_State.Light_State_LU = RED_Tr;
     lightState.Horizontal_Traffic_Light_State.Light_State_RD = GREEN_Tr;
+}
+///////////////////////////////
+
+void Set_Tl_StateHorLeftG_RightG(void) {
+    lightState.Horizontal_Traffic_Light_State.Light_State_LU = GREEN_Tr; 
+    lightState.Horizontal_Traffic_Light_State.Light_State_RD = GREEN_Tr;  
+}
+
+void Set_Tl_StateHorLeftG_RightO(void) {
+    lightState.Horizontal_Traffic_Light_State.Light_State_LU = GREEN_Tr; 
+    lightState.Horizontal_Traffic_Light_State.Light_State_RD = ORANGE_Tr;  
 }
 
 void Set_Tl_StateHorLeftG_RightR(void) {

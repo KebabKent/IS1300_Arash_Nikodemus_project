@@ -37,8 +37,14 @@ typedef enum {
     PHASE_HOR_GREEN,
     PHASE_SWITCH_TO_VER,
     PHASE_SWITCH_TO_HOR,
+
+	PHASE_VER_SPLIT_UPORANGE,
 	PHASE_VER_SPLIT_UPRED,
+
+	PHASE_HOR_SPLIT_LEFTORANGE,
     PHASE_HOR_SPLIT_LEFTRED,
+
+	PHASE_HOR_SPLIT_RIGHTORANGE,
 	PHASE_HOR_SPLIT_RIGHTRED
 } car_phase_t;
 
@@ -157,23 +163,31 @@ static void PedUp_Tick(LightsState_t* lights, InputState_t* input)
 
 static void setCarOutputs(void)
 {
-    if (carPhase == PHASE_VER_SPLIT_UPRED) {
+    if (carPhase == PHASE_VER_SPLIT_UPORANGE) {
+        Set_Tl_StateVerUpO_DownG();
+    } else if (carPhase == PHASE_VER_SPLIT_UPRED) {
         Set_Tl_StateVerUpR_DownG();
     } else {
         if (carUpState == CAR_G)      Set_Tl_StateVerG();
         else if (carUpState == CAR_O) Set_Tl_StateVerO();
         else                          Set_Tl_StateVerR();
     }
-    if (carPhase == PHASE_HOR_SPLIT_RIGHTRED) {
-        Set_Tl_StateHorLeftG_RightR();
+
+	if (carPhase == PHASE_HOR_SPLIT_LEFTORANGE) {
+        Set_Tl_StateHorLeftO_RightG();
     } else if (carPhase == PHASE_HOR_SPLIT_LEFTRED) {
         Set_Tl_StateHorLeftR_RightG();
+    } else if (carPhase == PHASE_HOR_SPLIT_RIGHTORANGE) {
+        Set_Tl_StateHorLeftG_RightO();
+    } else if (carPhase == PHASE_HOR_SPLIT_RIGHTRED) {
+        Set_Tl_StateHorLeftG_RightR();
     } else {
         if (carLeftState == CAR_G)      Set_Tl_StateHorG();
         else if (carLeftState == CAR_O) Set_Tl_StateHorO();
         else                            Set_Tl_StateHorR();
     }
 }
+
 
 static bool Up_GreenToRed(LightsState_t* lights)
 {
@@ -253,41 +267,52 @@ static void Car_Tick(LightsState_t* lights, InputState_t* input)
 	bool needHorGreen_forPedUp   = (pedUpDue   || activePed == ACTIVE_UP);  
 	bool needVerGreen_forPedLeft = (pedLeftDue || activePed == ACTIVE_LEFT);
 
+	bool leftPedActive = (pedLeftState == PED_WALKING) || pedLeftDue || (activePed == ACTIVE_LEFT);
+	bool upPedActive   = (pedUpState   == PED_WALKING) || pedUpDue   || (activePed == ACTIVE_UP);
+
+
 	if ((pedUpDue || activePed == ACTIVE_UP) && carPhase == PHASE_VER_GREEN) {
-    carPhase = PHASE_VER_SPLIT_UPRED;
+    	carPhase = PHASE_VER_SPLIT_UPRED;
+	}
+
+	if ((pedLeftDue || activePed == ACTIVE_LEFT || pedLeftState == PED_WALKING) && carPhase == PHASE_VER_GREEN) {
+    	carPhase = PHASE_VER_SPLIT_UPRED;
 	}
 
 	if ((pedLeftDue || activePed == ACTIVE_LEFT) && carPhase == PHASE_HOR_GREEN) {
-    carPhase = PHASE_HOR_SPLIT_LEFTRED;
+    	carPhase = PHASE_HOR_SPLIT_LEFTRED;
 	}
 
-	if (carPhase == PHASE_VER_SPLIT_UPRED) {
-    if (!(pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING)) {
-        carPhase = PHASE_VER_GREEN;
-    }
-}
 
 	if ((pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING) &&
     	carPhase == PHASE_HOR_GREEN) {
     	carPhase = PHASE_HOR_SPLIT_RIGHTRED;
 	}
 
+	
+
+//Return state	
 if (carPhase == PHASE_HOR_SPLIT_LEFTRED) {
     if (!(pedLeftDue || activePed == ACTIVE_LEFT || pedLeftState == PED_WALKING)) {
         carPhase = PHASE_HOR_GREEN;
     }
 }
 
+//Return state
 if (carPhase == PHASE_HOR_SPLIT_RIGHTRED) {
     if (!(pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING)) {
         carPhase = PHASE_HOR_GREEN;
     }
 }
 
-if ((pedLeftDue || activePed == ACTIVE_LEFT || pedLeftState == PED_WALKING) &&
-    carPhase == PHASE_VER_GREEN) {
-    carPhase = PHASE_VER_SPLIT_UPRED;
+//return state
+	if (carPhase == PHASE_VER_SPLIT_UPRED) {
+    if (!(pedUpDue || activePed == ACTIVE_UP || pedUpState == PED_WALKING)) {
+        carPhase = PHASE_VER_GREEN;
+    }
 }
+
+
 
 if (carPhase == PHASE_VER_SPLIT_UPRED ||
     carPhase == PHASE_HOR_SPLIT_LEFTRED ||
